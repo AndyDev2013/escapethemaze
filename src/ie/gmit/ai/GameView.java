@@ -107,6 +107,14 @@ public class GameView extends JPanel implements ActionListener
             				g2.draw(r2d);
             			}
             			else if(maze.getMaze()[row][col].containsType(TileType.PLAYER))
+            			{            				
+            				g2.setColor(Color.GREEN);
+            				
+            				Rectangle2D r2d = new Rectangle2D.Float((float)colMultf, (float)rowMultf, (float)smallImageSizeWidth, (float)smallImageSizeHeight);
+            			    g2.fill(r2d);
+            				g2.draw(r2d);          				
+            			}
+            			else if(maze.getMaze()[row][col].containsType(TileType.FOOD))
             			{
             				g2.setColor(Color.YELLOW);
             				

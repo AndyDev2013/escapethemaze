@@ -27,6 +27,8 @@ public class GlobalsVars {
 	
 	
 	// Global Player Variables
+
+	public static final int PLAYER_BASE_HEALTH = 60;
 	
 	public static int playerPositionX;
 	public static int playerPositionZ;	

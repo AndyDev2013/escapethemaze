@@ -1,8 +1,10 @@
 package ie.gmit.ai;
 
 import ie.gmit.entity.MazeEntity;
+import ie.gmit.food.Apple;
+import ie.gmit.food.ChickenLeg;
+import ie.gmit.food.Food;
 import ie.gmit.maze.GeneratorAlgorithm;
-import ie.gmit.maze.MazeGenerator;
 import ie.gmit.maze.MazeGeneratorFactory;
 import ie.gmit.tile.TilePiece;
 import ie.gmit.tile.TileType;
@@ -19,13 +21,7 @@ public class Maze {
 		
 		buildMaze(algorithm);
 
-		/*
-		int featureNumber = (int)((rows * cols) * 0.01);
-		addFeature('W', 'X', featureNumber);
-		addFeature('?', 'X', featureNumber);
-		addFeature('B', 'X', featureNumber);
-		addFeature('H', 'X', featureNumber);
-		*/
+		placeFood(20);
 	}
 	
 	public void initMaze()
@@ -44,6 +40,43 @@ public class Maze {
 	{
 		maze = MazeGeneratorFactory.getInstance().getMazeGenerator(algorithm).generateMaze(maze);
 	}	
+	
+	private void placeFood(int foodCount)
+	{
+		int row = 0;
+		int col = 0;		
+		int count = 0;
+		int tooLong = 0;
+		final int LIMIT = 200;		
+		
+		while(count < foodCount && tooLong < LIMIT)
+		{		
+			while(getMazeEntity(row, col).isWall())
+			{
+				row = GlobalsVars.RandomNumber(GlobalsVars.MAZE_DIMENSION);
+				col = GlobalsVars.RandomNumber(GlobalsVars.MAZE_DIMENSION);	
+				
+				++tooLong;
+			}
+			
+			int x = GlobalsVars.RandomNumber(2);	
+			
+			Food food;
+			
+			if(x == 0)
+				food = new Apple(row, col);
+			else
+				food = new ChickenLeg(row, col);				
+			
+			getMazeEntity(row, col).setTilepiece(food);		
+			getMazeEntity(row, col).setWall(false);
+			
+			row = GlobalsVars.RandomNumber(GlobalsVars.MAZE_DIMENSION);
+			col = GlobalsVars.RandomNumber(GlobalsVars.MAZE_DIMENSION);
+			
+			++count;
+		}
+	}
 	
 	public MazeEntity getMazeEntity(int x,int z)
 	{
@@ -88,32 +121,4 @@ public class Maze {
 		
 		return sb.toString();
 	}
-	
-	/*
-	 *   private char[][] maze;
-		public Maze(int rows, int cols){
-			maze = new char[rows][cols];
-			init();
-			buildMaze();
-			
-			int featureNumber = (int)((rows * cols) * 0.01);
-			addFeature('W', 'X', featureNumber);
-			addFeature('?', 'X', featureNumber);
-			addFeature('B', 'X', featureNumber);
-			addFeature('H', 'X', featureNumber);
-		}
-		
-		private void addFeature(char feature, char replace, int number){
-			int counter = 0;
-			while (counter < feature){
-				int row = (int) (maze.length * Math.random());
-				int col = (int) (maze[0].length * Math.random());
-				
-				if (maze[row][col] == replace){
-					maze[row][col] = feature;
-					counter++;
-				}
-			}
-		}
-		}*/
 }

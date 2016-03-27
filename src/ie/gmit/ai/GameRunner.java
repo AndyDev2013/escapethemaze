@@ -7,10 +7,8 @@ import java.awt.event.KeyListener;
 
 import javax.swing.JFrame;
 
-import ie.gmit.entity.MazeEntity;
 import ie.gmit.entity.Player;
 import ie.gmit.maze.GeneratorAlgorithm;
-import ie.gmit.tile.TileType;
 
 public class GameRunner implements KeyListener
 {
@@ -25,7 +23,7 @@ public class GameRunner implements KeyListener
     	
     	placePlayer();
     	
-    	System.out.println(maze.printMaze());
+    	//System.out.println(maze.printMaze());
     	
     	setupApplication();
 	}
@@ -54,19 +52,13 @@ public class GameRunner implements KeyListener
 		int row = GlobalsVars.RandomNumber(GlobalsVars.MAZE_DIMENSION);
 		int col = GlobalsVars.RandomNumber(GlobalsVars.MAZE_DIMENSION);
 		
-		int timesHitWall = 0;
-		
 		while(maze.getMazeEntity(row, col).isWall())
 		{
 			row = GlobalsVars.RandomNumber(GlobalsVars.MAZE_DIMENSION);
-			col = GlobalsVars.RandomNumber(GlobalsVars.MAZE_DIMENSION);	
-		
-			++timesHitWall;
+			col = GlobalsVars.RandomNumber(GlobalsVars.MAZE_DIMENSION);
 		}
 		
-		System.out.println("Times: " + timesHitWall+ " : " + row + " : " + col);
-		
-		GlobalsVars.player = new Player(row,col);
+		GlobalsVars.player = new Player(GlobalsVars.PLAYER_BASE_HEALTH,row,col);
 		
 		GlobalsVars.firstPositionPlayer(row,col, maze);
 	}
