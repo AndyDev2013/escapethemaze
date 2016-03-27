@@ -179,14 +179,22 @@ public class GameRunner implements KeyListener
         else if(e.getKeyCode() == KeyEvent.VK_H) 
         {
         	GlobalsVars.toggleHelp();
+        	view.repaint();
         }
-        else if(e.getKeyCode() == KeyEvent.VK_F) 
+        else if(e.getKeyCode() == KeyEvent.VK_E)
+        {
+        	GlobalsVars.player.eatCurrentFood();
+        	view.repaint();
+        }
+        else if(e.getKeyCode() == KeyEvent.VK_SLASH) 
         {
         	GlobalsVars.player.cycleFood();
+        	view.repaint();
         }
-        else if(e.getKeyCode() == KeyEvent.VK_G) 
+        else if(e.getKeyCode() == KeyEvent.VK_PERIOD) 
         {
         	GlobalsVars.player.cycleWeapons();
+        	view.repaint();
         }
         else
         {

@@ -119,15 +119,15 @@ public class Player extends TilePiece
 		return null;
 	}
 	
-	public Food eatCurrentFood()
+	public void eatCurrentFood()
 	{
 		if(canEatFood())
 		{
-			health += InventoryFood.get(currentFoodPosition).giveHealth();
+			this.health += InventoryFood.get(currentFoodPosition).giveHealth();
+			this.hunger += InventoryFood.get(currentFoodPosition).giveHunger();
 			InventoryFood.remove(currentFoodPosition);
+			currentFoodPosition = 0;
 		}
-		
-		return null;
 	}
 	
 	public void cycleFood()

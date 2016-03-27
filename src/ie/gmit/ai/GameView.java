@@ -225,7 +225,7 @@ public class GameView extends JPanel implements ActionListener
 		        }
 		        else
 		        {
-		        	g2.setColor(Color.WHITE);
+		        	g2.setColor(Color.GRAY);
     				Rectangle2D r2d = new Rectangle2D.Float((float)663, (float)720, 60, 60);
     			    g2.fill(r2d);
     				g2.draw(r2d);
@@ -238,7 +238,7 @@ public class GameView extends JPanel implements ActionListener
 		        }
 		        else
 		        {
-		        	g2.setColor(Color.WHITE);
+		        	g2.setColor(Color.GRAY);
     				Rectangle2D r2d = new Rectangle2D.Float((float)730, (float)720, 60, 60);
     			    g2.fill(r2d);
     				g2.draw(r2d);
