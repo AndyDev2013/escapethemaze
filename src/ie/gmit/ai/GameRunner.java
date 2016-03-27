@@ -80,7 +80,7 @@ public class GameRunner implements KeyListener
 	    	view.repaint();
 	    }
     	
-        if (e.getKeyCode() == KeyEvent.VK_RIGHT && GlobalsVars.playerPositionZ < GlobalsVars.MAZE_DIMENSION - 1) 
+        if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D && GlobalsVars.playerPositionZ < GlobalsVars.MAZE_DIMENSION - 1) 
         {
         	if (isValidMove(GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ + 1))
         	{
@@ -91,7 +91,7 @@ public class GameRunner implements KeyListener
         		GlobalsVars.TurnCount++;
         	}
         }
-        else if (e.getKeyCode() == KeyEvent.VK_LEFT && GlobalsVars.playerPositionZ > 0)
+        else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A && GlobalsVars.playerPositionZ > 0)
         {
         	if (isValidMove(GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ - 1))
         	{
@@ -102,7 +102,7 @@ public class GameRunner implements KeyListener
         		GlobalsVars.TurnCount++;
         	}
         }
-        else if (e.getKeyCode() == KeyEvent.VK_UP && GlobalsVars.playerPositionX > 0)
+        else if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W && GlobalsVars.playerPositionX > 0)
         {
         	if (isValidMove(GlobalsVars.playerPositionX - 1, GlobalsVars.playerPositionZ)) 
         	{
@@ -113,7 +113,7 @@ public class GameRunner implements KeyListener
         		GlobalsVars.TurnCount++;
         	}
         }
-        else if (e.getKeyCode() == KeyEvent.VK_DOWN && GlobalsVars.playerPositionX < GlobalsVars.MAZE_DIMENSION  - 1) 
+        else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S && GlobalsVars.playerPositionX < GlobalsVars.MAZE_DIMENSION  - 1) 
         {
         	if (isValidMove(GlobalsVars.playerPositionX + 1, GlobalsVars.playerPositionZ)) 
         	{
