@@ -3,6 +3,7 @@ package ie.gmit.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import ie.gmit.ai.GlobalsVars;
 import ie.gmit.food.Food;
 import ie.gmit.tile.TilePiece;
 import ie.gmit.tile.TileType;
@@ -43,12 +44,53 @@ public class Player extends TilePiece
 		this.hunger = hunger;
 	}
 	
+	public int getFoodCount()
+	{
+		return this.InventoryFood.size();
+	}
+	
+	public int getWeaponCount()
+	{
+		return this.InventoryWeapons.size();
+	}
+	
+	public int getWeaponPos()
+	{
+		return this.currentWeaponPosition;
+	}
+	
+	public int getFoodPos()
+	{
+		return this.currentFoodPosition;
+	}
+	
+	public void feelHunger()
+	{
+		int h = GlobalsVars.RandomNumber(7);
+		
+		if(this.hunger - h > 0)
+			this.hunger -= h;
+	}
+	
 	public boolean canEatFood()
 	{
 		try
 		{
 			if(InventoryFood.size() > 0)
 				if(InventoryFood.get(currentFoodPosition) != null)
+					return true;			
+		}
+		catch(Exception e){e.toString(); return false;}
+		
+		return false;
+	}
+	
+	public boolean canUseWeapon()
+	{
+		try
+		{
+			if(InventoryWeapons.size() > 0)
+				if(InventoryWeapons.get(currentWeaponPosition) != null)
 					return true;
 			
 		}
@@ -67,6 +109,16 @@ public class Player extends TilePiece
 		return null;
 	}
 	
+	public Weapon getCurrentWeapon()
+	{
+		if(canUseWeapon())
+		{
+			return this.InventoryWeapons.get(currentWeaponPosition);
+		}
+		
+		return null;
+	}
+	
 	public Food eatCurrentFood()
 	{
 		if(canEatFood())
@@ -80,7 +132,7 @@ public class Player extends TilePiece
 	
 	public void cycleFood()
 	{
-		if(currentFoodPosition + 1 > InventoryFood.size())
+		if(currentFoodPosition + 1 > InventoryFood.size() - 1)
 		{
 			currentFoodPosition = 0;
 		}
@@ -106,7 +158,7 @@ public class Player extends TilePiece
 	
 	public void cycleWeapons()
 	{
-		if(currentWeaponPosition + 1 > InventoryWeapons.size())
+		if(currentWeaponPosition + 1 > InventoryWeapons.size() - 1)
 		{
 			currentWeaponPosition = 0;
 		}

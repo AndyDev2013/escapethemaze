@@ -20,7 +20,9 @@ public class GlobalsVars {
 	public static final int DEFAULT_VIEW_SIZE = 800;
 	public static final int INFO_PANEL_SIZE = DEFAULT_VIEW_SIZE - (GlobalsVars.ImageSize * GlobalsVars.drawRows);
 	public static final int ImageSize = 160;
+	
 	public static boolean zoomOut = false;
+	public static boolean helpScreen = false;
 	
 	public static double SMALL_IMAGE_SIZE_WIDTH = (double)GlobalsVars.DEFAULT_VIEW_SIZE / (double)GlobalsVars.MAZE_DIMENSION;
 	public static double SMALL_IMAGE_SIZE_HEIGHT = (double)(GlobalsVars.DEFAULT_VIEW_SIZE - (double)GlobalsVars.INFO_PANEL_SIZE) / (double)GlobalsVars.MAZE_DIMENSION;
@@ -73,6 +75,11 @@ public class GlobalsVars {
 	public static void toggleZoom()
 	{
 		zoomOut = !zoomOut;		
+	}
+	
+	public static void toggleHelp()
+	{
+		helpScreen = !helpScreen;		
 	}
 	
 	// Random Numbers

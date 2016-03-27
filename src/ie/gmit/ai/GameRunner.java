@@ -93,6 +93,11 @@ public class GameRunner implements KeyListener
         	        	
         		view.repaint();
         		
+        		if(GlobalsVars.TurnCount % 20 == 0)
+        		{
+        			GlobalsVars.player.feelHunger();
+        		}
+        		
         		GlobalsVars.TurnCount++;
         	}
         }
@@ -112,6 +117,11 @@ public class GameRunner implements KeyListener
         		GlobalsVars.updatePlayer(GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ, GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ - 1, maze);  		
 	        	
         		view.repaint();
+        		
+        		if(GlobalsVars.TurnCount % 20 == 0)
+        		{
+        			GlobalsVars.player.feelHunger();
+        		}
         		
         		GlobalsVars.TurnCount++;
         	}
@@ -133,6 +143,11 @@ public class GameRunner implements KeyListener
         		
         		view.repaint();	
         		
+        		if(GlobalsVars.TurnCount % 20 == 0)
+        		{
+        			GlobalsVars.player.feelHunger();
+        		}
+        		
         		GlobalsVars.TurnCount++;
         	}
         }
@@ -151,10 +166,27 @@ public class GameRunner implements KeyListener
         		
         		GlobalsVars.updatePlayer(GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ, GlobalsVars.playerPositionX + 1, GlobalsVars.playerPositionZ, maze);
         		
-        		view.repaint();		
+        		view.repaint();	
+        		
+        		if(GlobalsVars.TurnCount % 20 == 0)
+        		{
+        			GlobalsVars.player.feelHunger();
+        		}
         		
         		GlobalsVars.TurnCount++;
         	}
+        }
+        else if(e.getKeyCode() == KeyEvent.VK_H) 
+        {
+        	GlobalsVars.toggleHelp();
+        }
+        else if(e.getKeyCode() == KeyEvent.VK_F) 
+        {
+        	GlobalsVars.player.cycleFood();
+        }
+        else if(e.getKeyCode() == KeyEvent.VK_G) 
+        {
+        	GlobalsVars.player.cycleWeapons();
         }
         else
         {
