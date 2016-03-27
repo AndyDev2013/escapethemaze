@@ -40,7 +40,7 @@ public class GameView extends JPanel implements ActionListener
 		timer = new Timer(300, this);
 		timer.start();
 
-        font = new Font("Times New Roman", Font.PLAIN, 25); 
+        font = new Font("Times New Roman", Font.PLAIN, 22); 
 	}
 
 	public void paintComponent(Graphics g)
@@ -130,6 +130,22 @@ public class GameView extends JPanel implements ActionListener
             			    g2.fill(r2d);
             				g2.draw(r2d);          				
             			}
+            			else if(maze.getMaze()[row][col].containsType(TileType.ENEMY))
+            			{
+            				g2.setColor(Color.RED);
+            				
+            				Rectangle2D r2d = new Rectangle2D.Float((float)colMultf, (float)rowMultf, (float)smallImageSizeWidth, (float)smallImageSizeHeight);
+            			    g2.fill(r2d);
+            				g2.draw(r2d);          				
+            			}
+            			else if(maze.getMaze()[row][col].containsType(TileType.EXIT))
+            			{
+            				g2.setColor(Color.PINK);
+            				
+            				Rectangle2D r2d = new Rectangle2D.Float((float)colMultf, (float)rowMultf, (float)smallImageSizeWidth, (float)smallImageSizeHeight);
+            			    g2.fill(r2d);
+            				g2.draw(r2d);          				
+            			}
             			else
             			{
             				g2.setColor(Color.LIGHT_GRAY);
@@ -142,7 +158,7 @@ public class GameView extends JPanel implements ActionListener
             		{
             			e.toString(); 
         			
-        				g2.setColor(Color.PINK);
+        				g2.setColor(Color.WHITE);
         				
         				Rectangle2D r2d = new Rectangle2D.Float((float)colMultf, (float)rowMultf, (float)smallImageSizeWidth, (float)smallImageSizeHeight);
         			    g2.fill(r2d);
@@ -167,15 +183,70 @@ public class GameView extends JPanel implements ActionListener
 		
 		}catch (IOException e){e.toString();} 
         
-        g2.setColor(Color.white);
-        
-        // Draw Hungry Status
-        
-        g2.drawString("Turn Count: " + GlobalsVars.TurnCount, 10, (GlobalsVars.ImageSize * GlobalsVars.drawRows) + 30);
-        
-        // Draw Turn Count
-        
-        g2.drawString(GlobalsVars.player.getHungryStatus(), 10, (GlobalsVars.ImageSize * GlobalsVars.drawRows) + 70);
+        if(!GlobalsVars.zoomOut)
+        {   	        
+	        g2.setColor(Color.white);
+	        
+	        // Draw Hungry Status
+	        
+	        g2.drawString("Turn Count: " + GlobalsVars.TurnCount, 660, (GlobalsVars.ImageSize * GlobalsVars.drawRows) + 20);
+	        
+	        g2.drawString(GlobalsVars.currentTime(), 660 ,(GlobalsVars.ImageSize * GlobalsVars.drawRows) + 50);
+	        
+	        // Draw Turn Count
+	        
+	        g2.drawString("Health: " + GlobalsVars.player.getHealth(), 10, (GlobalsVars.ImageSize * GlobalsVars.drawRows) + 20);
+	        
+	        g2.drawString(GlobalsVars.player.getHungryStatus(), 10, (GlobalsVars.ImageSize * GlobalsVars.drawRows) + 50);
+		}
+        else
+        {
+        	g2.setColor(Color.white);
+        	g2.drawString("Player: ", 10, (GlobalsVars.ImageSize * GlobalsVars.drawRows) + 25);
+        	g2.drawString("Enemy:  ", 10, (GlobalsVars.ImageSize * GlobalsVars.drawRows) + 55);
+        	g2.drawString("Food:   ", 10, (GlobalsVars.ImageSize * GlobalsVars.drawRows) + 85);
+        	g2.drawString("Weapon: ", 10, (GlobalsVars.ImageSize * GlobalsVars.drawRows) + 115);
+        	g2.drawString("Finish: ", 10, (GlobalsVars.ImageSize * GlobalsVars.drawRows) + 145);
+        	
+        	g2.drawString("Wall  : ", 130, (GlobalsVars.ImageSize * GlobalsVars.drawRows) + 25);
+        	g2.drawString("Floor : ", 130, (GlobalsVars.ImageSize * GlobalsVars.drawRows) + 55);
+        	
+        	Rectangle2D r2d;
+			g2.setColor(Color.GREEN);
+			r2d = new Rectangle2D.Float((float)100,(float)(GlobalsVars.ImageSize * GlobalsVars.drawRows) +  13, (float)smallImageSizeWidth, (float)smallImageSizeHeight);
+		    g2.fill(r2d);
+			g2.draw(r2d);
+			
+			g2.setColor(Color.RED);
+			r2d = new Rectangle2D.Float((float)100,(float)(GlobalsVars.ImageSize * GlobalsVars.drawRows) +  42, (float)smallImageSizeWidth, (float)smallImageSizeHeight);
+		    g2.fill(r2d);
+			g2.draw(r2d);
+			
+			g2.setColor(Color.YELLOW);
+			r2d = new Rectangle2D.Float((float)100,(float)(GlobalsVars.ImageSize * GlobalsVars.drawRows) + 73, (float)smallImageSizeWidth, (float)smallImageSizeHeight);
+		    g2.fill(r2d);
+			g2.draw(r2d);
+			
+			g2.setColor(Color.CYAN);
+			r2d = new Rectangle2D.Float((float)100,(float)(GlobalsVars.ImageSize * GlobalsVars.drawRows) +  103, (float)smallImageSizeWidth, (float)smallImageSizeHeight);
+		    g2.fill(r2d);
+			g2.draw(r2d);			
+			
+			g2.setColor(Color.PINK);
+			r2d = new Rectangle2D.Float((float)100,(float)(GlobalsVars.ImageSize * GlobalsVars.drawRows) + 133, (float)smallImageSizeWidth, (float)smallImageSizeHeight);
+		    g2.fill(r2d);
+			g2.draw(r2d);
+			
+			g2.setColor(Color.BLACK);
+			r2d = new Rectangle2D.Float((float)200,(float)(GlobalsVars.ImageSize * GlobalsVars.drawRows) +  13, (float)smallImageSizeWidth, (float)smallImageSizeHeight);
+		    g2.fill(r2d);
+			g2.draw(r2d);			
+			
+			g2.setColor(Color.LIGHT_GRAY);
+			r2d = new Rectangle2D.Float((float)200,(float)(GlobalsVars.ImageSize * GlobalsVars.drawRows) + 42, (float)smallImageSizeWidth, (float)smallImageSizeHeight);
+		    g2.fill(r2d);
+			g2.draw(r2d);
+        }
 	}
 
 	public void actionPerformed(ActionEvent e)

@@ -28,6 +28,8 @@ public class GameRunner implements KeyListener
     	//System.out.println(maze.printMaze());
     	
     	setupApplication();
+    	
+		GlobalsVars.startTime = System.currentTimeMillis();	
 	}
 	
 	private void setupApplication()

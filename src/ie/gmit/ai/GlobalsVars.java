@@ -39,6 +39,15 @@ public class GlobalsVars {
 	public static int TurnCount = 0;
 	
 	// Player Tracking
+
+	public static long startTime = 0;
+	
+	public static String currentTime()
+	{
+		return ("Time: " + (System.currentTimeMillis() - startTime) / 1000);		
+	}
+	
+	// Timer
 	
 	public static void firstPositionPlayer(int x,int z, Maze maze)
 	{	
@@ -77,7 +86,7 @@ public class GlobalsVars {
 	
 	private static GlobalsVars instance = null;
 	
-	protected GlobalsVars() {}
+	protected GlobalsVars()	{}
    
     public static GlobalsVars getInstance() 
     {
