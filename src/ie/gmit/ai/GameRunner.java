@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 
 import ie.gmit.entity.MazeEntity;
 import ie.gmit.entity.Player;
+import ie.gmit.maze.GeneratorAlgorithm;
 import ie.gmit.tile.TileType;
 
 public class GameRunner implements KeyListener
@@ -16,9 +17,10 @@ public class GameRunner implements KeyListener
 	private GameView view;
 	private Maze maze;
 	
-	public GameRunner() throws Exception
+	public GameRunner(GeneratorAlgorithm algorithm) throws Exception
 	{
-		maze = new Maze(GlobalsVars.MAZE_DIMENSION, GlobalsVars.MAZE_DIMENSION);
+		maze = new Maze(algorithm,GlobalsVars.MAZE_DIMENSION, GlobalsVars.MAZE_DIMENSION);
+
     	view = new GameView(maze);
     	
     	placePlayer();
@@ -78,38 +80,68 @@ public class GameRunner implements KeyListener
 	    	view.repaint();
 	    }
     	
-    	/*
-        if (e.getKeyCode() == KeyEvent.VK_RIGHT && GlobalsVars.playerPositionZ < MAZE_DIMENSION - 1) 
+        if (e.getKeyCode() == KeyEvent.VK_RIGHT && GlobalsVars.playerPositionZ < GlobalsVars.MAZE_DIMENSION - 1) 
         {
-        	if (isValidMove(currentRow, currentCol + 1)) currentCol++;   		
+        	if (isValidMove(GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ + 1))
+        	{
+        		GlobalsVars.updatePlayer(GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ, GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ + 1, maze);  		
         	        	
-    		view.repaint();
+        		view.repaint();
+        		
+        		GlobalsVars.TurnCount++;
+        	}
         }
         else if (e.getKeyCode() == KeyEvent.VK_LEFT && GlobalsVars.playerPositionZ > 0)
         {
-        	if (isValidMove(currentRow, currentCol - 1)) currentCol--;	
-        	
-        	view.repaint();
+        	if (isValidMove(GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ - 1))
+        	{
+        		GlobalsVars.updatePlayer(GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ, GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ - 1, maze);  		
+	        	
+        		view.repaint();
+        		
+        		GlobalsVars.TurnCount++;
+        	}
         }
         else if (e.getKeyCode() == KeyEvent.VK_UP && GlobalsVars.playerPositionX > 0)
         {
-        	if (isValidMove(currentRow - 1, currentCol)) currentRow--;
-        	        	
-    		view.repaint();
+        	if (isValidMove(GlobalsVars.playerPositionX - 1, GlobalsVars.playerPositionZ)) 
+        	{
+        		GlobalsVars.updatePlayer(GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ, GlobalsVars.playerPositionX - 1, GlobalsVars.playerPositionZ, maze);
+        		
+        		view.repaint();	
+        		
+        		GlobalsVars.TurnCount++;
+        	}
         }
-        else if (e.getKeyCode() == KeyEvent.VK_DOWN && GlobalsVars.playerPositionX < MAZE_DIMENSION - 1) 
+        else if (e.getKeyCode() == KeyEvent.VK_DOWN && GlobalsVars.playerPositionX < GlobalsVars.MAZE_DIMENSION  - 1) 
         {
-        	if (isValidMove(currentRow + 1, currentCol)) currentRow++;   
-        	        	     	  	
-    		view.repaint();
+        	if (isValidMove(GlobalsVars.playerPositionX + 1, GlobalsVars.playerPositionZ)) 
+        	{
+        		GlobalsVars.updatePlayer(GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ, GlobalsVars.playerPositionX + 1, GlobalsVars.playerPositionZ, maze);
+        		
+        		view.repaint();		
+        		
+        		GlobalsVars.TurnCount++;
+        	}
         }
         else
         {
         	return;
-        }               
-        */    
+        }     
     	
     }
+    
+	private boolean isValidMove(int r, int c)
+	{
+		if (r <= GlobalsVars.MAZE_DIMENSION - 1 && c <= maze.getMaze()[r].length - 1 && !maze.getMaze()[r][c].isWall())
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
     
     public void keyReleased(KeyEvent e) {} //Ignore
 	public void keyTyped(KeyEvent e) {} //Ignore

@@ -3,6 +3,8 @@ package ie.gmit.ai;
 import java.util.Random;
 
 import ie.gmit.entity.Player;
+import ie.gmit.tile.TilePiece;
+import ie.gmit.tile.TileType;
 
 public class GlobalsVars {
 
@@ -44,12 +46,15 @@ public class GlobalsVars {
 	}
 	
 	public static void updatePlayer(int oldX,int oldZ,int x,int z, Maze maze)
-	{				
-		maze.getMazeEntity(x, z).setTilepiece(player);
+	{	
+		TilePiece floor = new TilePiece(TileType.FLOOR, oldX, oldZ);
+
 		player.setX(x);
 		player.setZ(z);
 		playerPositionX = x;
-		playerPositionZ = z;
+		playerPositionZ = z;	
+		maze.getMazeEntity(oldX, oldZ).setTilepiece(floor);
+		maze.getMazeEntity(x, z).setTilepiece(player);
 	}
 	
 	public static void toggleZoom()

@@ -72,16 +72,11 @@ public class GameView extends JPanel implements ActionListener
 	        		{
 	        			e.toString(); 
 	        			
-	        			try
-	        			{
-							currentImage = ImageIO.read(new java.io.File("Images/error.png"));        		
-							g2.drawImage(currentImage, colMult, rowMult, GlobalsVars.ImageSize, GlobalsVars.ImageSize, null);
-						}
-	        			catch (IOException e1) 
-	        			{        		
-	        				g2.setColor(Color.pink);
-	        				g2.drawRect(colMult, rowMult, GlobalsVars.ImageSize, GlobalsVars.ImageSize);
-	        			}
+        				g2.setColor(Color.BLACK);
+				           
+        				Rectangle2D r2d = new Rectangle2D.Float((float)colMult, (float)rowMult, (float)smallImageSizeWidth, (float)smallImageSizeHeight);
+        			    g2.fill(r2d);
+        				g2.draw(r2d);
 	        		} 
 	        		
 	        		colMult += GlobalsVars.ImageSize;

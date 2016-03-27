@@ -9,6 +9,8 @@ public class MazeEntity {
 	private TilePiece tilePiece;
 	private int x,z;
 	boolean isWall = false;
+	boolean isGoalNode = false;
+	boolean isVisted = false;
 	private Node node;
 	
 	public MazeEntity(int x,int z, TilePiece tile)
@@ -29,6 +31,21 @@ public class MazeEntity {
 	public void setTilepiece(TilePiece piece)
 	{
 		this.tilePiece = piece;
+	}
+	
+	public void setGoalNode(boolean flag)
+	{
+		this.isGoalNode = flag;
+	}
+	
+	public void visitedNode()
+	{
+		isVisted = true;
+	}
+	
+	public boolean isVisited()
+	{
+		return this.isVisted;
 	}
 	
 	public TilePiece getTilePiece()
