@@ -8,6 +8,10 @@ import ie.gmit.maze.GeneratorAlgorithm;
 import ie.gmit.maze.MazeGeneratorFactory;
 import ie.gmit.tile.TilePiece;
 import ie.gmit.tile.TileType;
+import ie.gmit.weapon.Bomb;
+import ie.gmit.weapon.Dagger;
+import ie.gmit.weapon.Sword;
+import ie.gmit.weapon.Weapon;
 
 public class Maze {
 	
@@ -21,7 +25,8 @@ public class Maze {
 		
 		buildMaze(algorithm);
 
-		placeFood(20);
+		placeFood(GlobalsVars.FOOD_SPAWN_COUNT);
+		placeWeapons(GlobalsVars.WEAPON_SPAWN_COUNT);
 	}
 	
 	public void initMaze()
@@ -69,6 +74,45 @@ public class Maze {
 				food = new ChickenLeg(row, col);				
 			
 			getMazeEntity(row, col).setTilepiece(food);		
+			getMazeEntity(row, col).setWall(false);
+			
+			row = GlobalsVars.RandomNumber(GlobalsVars.MAZE_DIMENSION);
+			col = GlobalsVars.RandomNumber(GlobalsVars.MAZE_DIMENSION);
+			
+			++count;
+		}
+	}
+	
+	private void placeWeapons(int weaponCount)
+	{
+		int row = 0;
+		int col = 0;		
+		int count = 0;
+		int tooLong = 0;
+		final int LIMIT = 200;		
+		
+		while(count < weaponCount && tooLong < LIMIT)
+		{		
+			while(getMazeEntity(row, col).isWall())
+			{
+				row = GlobalsVars.RandomNumber(GlobalsVars.MAZE_DIMENSION);
+				col = GlobalsVars.RandomNumber(GlobalsVars.MAZE_DIMENSION);	
+				
+				++tooLong;
+			}
+			
+			int x = GlobalsVars.RandomNumber(3);	
+			
+			Weapon w;
+			
+			if(x == 0)
+				w = new Dagger(row, col, "Dagger", 10, 3);
+			else if(x == 1)
+				w = new Sword(row, col, "Sword", 17, 7);
+			else
+				w = new Bomb(row, col, "Gernade", 0, 0);				
+			
+			getMazeEntity(row, col).setTilepiece(w);		
 			getMazeEntity(row, col).setWall(false);
 			
 			row = GlobalsVars.RandomNumber(GlobalsVars.MAZE_DIMENSION);

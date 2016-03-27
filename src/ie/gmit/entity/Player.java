@@ -6,6 +6,7 @@ import java.util.List;
 import ie.gmit.food.Food;
 import ie.gmit.tile.TilePiece;
 import ie.gmit.tile.TileType;
+import ie.gmit.weapon.Weapon;
 
 public class Player extends TilePiece
 {
@@ -14,7 +15,7 @@ public class Player extends TilePiece
 	private int currentFoodPosition = 0;
 	private int currentWeaponPosition = 0;
 	private List<Food> InventoryFood = new ArrayList<Food>();
-	//private List<Weapon> InventoryWeapons = new ArrayList<Weapon>();
+	private List<Weapon> InventoryWeapons = new ArrayList<Weapon>();
 	
 	public Player(int health,int x, int z) 
 	{
@@ -60,7 +61,7 @@ public class Player extends TilePiece
 	{
 		if(canEatFood())
 		{
-			return InventoryFood.get(currentFoodPosition);
+			return this.InventoryFood.get(currentFoodPosition);
 		}
 		
 		return null;
@@ -89,7 +90,20 @@ public class Player extends TilePiece
 		}
 	}
 	
-	/*
+	public void pickupFood(TilePiece f)
+	{
+		Food food = (Food)f;
+		
+		this.InventoryFood.add(food);
+	}
+	
+	public void pickupWeapon(TilePiece w)
+	{
+		Weapon weapon = (Weapon)w;
+		
+		this.InventoryWeapons.add(weapon);
+	}
+	
 	public void cycleWeapons()
 	{
 		if(currentWeaponPosition + 1 > InventoryWeapons.size())
@@ -101,7 +115,6 @@ public class Player extends TilePiece
 			currentWeaponPosition++;
 		}
 	}
-	*/
 	
 	public String getHungryStatus()
 	{

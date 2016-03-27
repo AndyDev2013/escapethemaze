@@ -25,6 +25,8 @@ public class GlobalsVars {
 	public static double SMALL_IMAGE_SIZE_WIDTH = (double)GlobalsVars.DEFAULT_VIEW_SIZE / (double)GlobalsVars.MAZE_DIMENSION;
 	public static double SMALL_IMAGE_SIZE_HEIGHT = (double)(GlobalsVars.DEFAULT_VIEW_SIZE - (double)GlobalsVars.INFO_PANEL_SIZE) / (double)GlobalsVars.MAZE_DIMENSION;
 	
+	public static int WEAPON_SPAWN_COUNT = 20;
+	public static int FOOD_SPAWN_COUNT = 20;
 	
 	// Global Player Variables
 

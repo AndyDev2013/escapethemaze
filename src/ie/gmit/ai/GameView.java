@@ -122,6 +122,14 @@ public class GameView extends JPanel implements ActionListener
             			    g2.fill(r2d);
             				g2.draw(r2d);          				
             			}
+            			else if(maze.getMaze()[row][col].containsType(TileType.WEAPON))
+            			{
+            				g2.setColor(Color.CYAN);
+            				
+            				Rectangle2D r2d = new Rectangle2D.Float((float)colMultf, (float)rowMultf, (float)smallImageSizeWidth, (float)smallImageSizeHeight);
+            			    g2.fill(r2d);
+            				g2.draw(r2d);          				
+            			}
             			else
             			{
             				g2.setColor(Color.LIGHT_GRAY);
@@ -129,8 +137,6 @@ public class GameView extends JPanel implements ActionListener
             			    g2.fill(r2d);
             				g2.draw(r2d);
             			}
-            			
-            			//g2.drawImage(currentImage, colMult, rowMult, smallImageSizeWidth, smallImageSizeHeight, null);
             		}
             		catch(Exception e)
             		{

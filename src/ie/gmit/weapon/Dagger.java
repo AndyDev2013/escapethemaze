@@ -1,20 +1,34 @@
 package ie.gmit.weapon;
 
-public class Dagger implements Wieldable {
+import java.awt.image.BufferedImage;
 
-	public String getWeaponName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+import javax.imageio.ImageIO;
 
-	public int getAttackValue() {
-		// TODO Auto-generated method stub
-		return 0;
+import ie.gmit.tile.TileType;
+
+public class Dagger extends Weapon {
+
+	BufferedImage image;
+	
+	public Dagger(int x, int z,String w, int aV, int dV) {
+		
+		super(TileType.WEAPON, x, z, w, aV, dV);
+		
+		try
+		{
+			image = ImageIO.read(new java.io.File("Images/dagger.png"));
+			setTileImage(image);
+			
+		}
+		catch(Exception e)
+		{
+			e.toString();
+		}
 	}
 	
-	public int getDurabilityValue() {
-		// TODO Auto-generated method stub
-		return 0;
+	public BufferedImage getFoodImage()
+	{
+		return this.image;
 	}
 
 }
