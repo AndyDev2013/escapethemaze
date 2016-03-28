@@ -27,6 +27,8 @@ public class Maze {
 
 		placeFood(GlobalsVars.FOOD_SPAWN_COUNT);
 		placeWeapons(GlobalsVars.WEAPON_SPAWN_COUNT);
+		
+		placeDoor();
 	}
 	
 	public void initMaze()
@@ -39,6 +41,21 @@ public class Maze {
 				maze[row][col].setWall(true);
 			}
 		}
+	}
+	
+	public void placeDoor()
+	{
+		int row = GlobalsVars.RandomNumber(GlobalsVars.MAZE_DIMENSION);
+		int col = GlobalsVars.RandomNumber(GlobalsVars.MAZE_DIMENSION);
+		
+		while(getMazeEntity(row, col).isWall())
+		{
+			row = GlobalsVars.RandomNumber(GlobalsVars.MAZE_DIMENSION);
+			col = GlobalsVars.RandomNumber(GlobalsVars.MAZE_DIMENSION);	
+		}
+		
+		maze[row][col] = new MazeEntity(row, col, new TilePiece(TileType.EXIT, row, col));
+		maze[row][col].setGoalNode(true);
 	}
 	
 	private void buildMaze(GeneratorAlgorithm algorithm)
@@ -106,11 +123,11 @@ public class Maze {
 			Weapon w;
 			
 			if(x == 0)
-				w = new Dagger(row, col, "Dagger", 10, 3);
+				w = new Dagger(row, col, "Dagger", 10, 1); 
 			else if(x == 1)
-				w = new Sword(row, col, "Sword", 17, 7);
+				w = new Sword(row, col, "Sword", 17, 1);
 			else
-				w = new Bomb(row, col, "Gernade", 0, 0);				
+				w = new Bomb(row, col, "Gernade", 0, 1);				
 			
 			getMazeEntity(row, col).setTilepiece(w);		
 			getMazeEntity(row, col).setWall(false);

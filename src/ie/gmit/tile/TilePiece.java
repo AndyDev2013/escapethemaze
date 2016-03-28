@@ -46,11 +46,19 @@ public class TilePiece {
 		}
 		else if(tileType == TileType.EXIT)
 		{
-			//image = ImageIO.read(new java.io.File("Images/.png"));
+			try 
+			{
+				image = ImageIO.read(new java.io.File("Images/door.png"));
+			}
+			catch (IOException e){e.toString();}
 		}
 		else if(tileType == TileType.HELP)
 		{
-			//image = ImageIO.read(new java.io.File("Images/.png"));
+			try 
+			{
+				image = ImageIO.read(new java.io.File("Images/cage.png"));
+			}
+			catch (IOException e){e.toString();}
 		}
 		else if(tileType == TileType.PLAYER)
 		{
@@ -60,24 +68,13 @@ public class TilePiece {
 			}
 			catch (IOException e){e.toString();}
 		}
-		else if(tileType == TileType.WEAPON)
-		{
-			//image = ImageIO.read(new java.io.File("Images/.png"));
-		}
-		else if(tileType == TileType.ENEMY)
-		{
-			if(GlobalsVars.RandomNumber(2) == 0)
-			{
-				//image = ImageIO.read(new java.io.File("Images/.png"));
-			}
-			else
-			{
-				//image = ImageIO.read(new java.io.File("Images/.png"));
-			}
-		}
 		else
 		{			
-			//image = ImageIO.read(new java.io.File("Images/.png")); DEBUG IMAGE FALSE
+			try 
+			{
+				image = ImageIO.read(new java.io.File("Images/debug.png"));
+			}
+			catch (IOException e){e.toString();}
 		}
 	}
 	

@@ -33,6 +33,11 @@ public class MazeEntity {
 		this.tilePiece = piece;
 	}
 	
+	public boolean isGoalNode()
+	{
+		return this.isGoalNode;
+	}
+	
 	public void setGoalNode(boolean flag)
 	{
 		this.isGoalNode = flag;

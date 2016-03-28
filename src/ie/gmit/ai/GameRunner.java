@@ -77,7 +77,10 @@ public class GameRunner implements KeyListener
 	    }
     	
         if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D && GlobalsVars.playerPositionZ < GlobalsVars.MAZE_DIMENSION - 1) 
-        {
+        {    		
+    		if(isExit(GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ + 1))
+    			GlobalsVars.WON_GAME = true;
+    		
         	if (isValidMove(GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ + 1))
         	{
         		if (isSomethingPickupable(GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ + 1) == TileType.FOOD)
@@ -90,19 +93,21 @@ public class GameRunner implements KeyListener
         		}
         		
         		GlobalsVars.updatePlayer(GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ, GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ + 1, maze);  		
-        	        	
-        		view.repaint();
-        		
+        	        	        		
         		if(GlobalsVars.TurnCount % 20 == 0)
         		{
         			GlobalsVars.player.feelHunger();
         		}
         		
         		GlobalsVars.TurnCount++;
+        		view.repaint();
         	}
         }
         else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A && GlobalsVars.playerPositionZ > 0)
-        {        	
+        {         		
+    		if(isExit(GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ - 1))
+    			GlobalsVars.WON_GAME = true;
+        	
         	if (isValidMove(GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ - 1))
         	{
             	if(isSomethingPickupable(GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ - 1) == TileType.FOOD)
@@ -115,19 +120,21 @@ public class GameRunner implements KeyListener
         		}				
         		
         		GlobalsVars.updatePlayer(GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ, GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ - 1, maze);  		
-	        	
-        		view.repaint();
-        		
+	        	        		
         		if(GlobalsVars.TurnCount % 20 == 0)
         		{
         			GlobalsVars.player.feelHunger();
         		}
         		
         		GlobalsVars.TurnCount++;
+        		view.repaint();
         	}
         }
         else if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W && GlobalsVars.playerPositionX > 0)
-        {       	
+        {     
+    		if(isExit(GlobalsVars.playerPositionX - 1, GlobalsVars.playerPositionZ))
+    			GlobalsVars.WON_GAME = true;
+        	
         	if (isValidMove(GlobalsVars.playerPositionX - 1, GlobalsVars.playerPositionZ)) 
         	{
             	if(isSomethingPickupable(GlobalsVars.playerPositionX - 1, GlobalsVars.playerPositionZ) == TileType.FOOD)
@@ -140,19 +147,22 @@ public class GameRunner implements KeyListener
         		}	
         		
         		GlobalsVars.updatePlayer(GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ, GlobalsVars.playerPositionX - 1, GlobalsVars.playerPositionZ, maze);
-        		
-        		view.repaint();	
-        		
+        		        		
         		if(GlobalsVars.TurnCount % 20 == 0)
         		{
         			GlobalsVars.player.feelHunger();
-        		}
-        		
+        		}      		
+       		
         		GlobalsVars.TurnCount++;
+        		
+        		view.repaint();	
         	}
         }
         else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S && GlobalsVars.playerPositionX < GlobalsVars.MAZE_DIMENSION  - 1) 
-        {        	
+        {        
+    		if(isExit(GlobalsVars.playerPositionX + 1, GlobalsVars.playerPositionZ))
+    			GlobalsVars.WON_GAME = true;
+        	
         	if (isValidMove(GlobalsVars.playerPositionX + 1, GlobalsVars.playerPositionZ)) 
         	{
             	if(isSomethingPickupable(GlobalsVars.playerPositionX + 1, GlobalsVars.playerPositionZ) == TileType.FOOD) 
@@ -165,15 +175,15 @@ public class GameRunner implements KeyListener
         		}	
         		
         		GlobalsVars.updatePlayer(GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ, GlobalsVars.playerPositionX + 1, GlobalsVars.playerPositionZ, maze);
-        		
-        		view.repaint();	
-        		
+        		        		
         		if(GlobalsVars.TurnCount % 20 == 0)
         		{
         			GlobalsVars.player.feelHunger();
-        		}
+        		}        		
         		
         		GlobalsVars.TurnCount++;
+
+        		view.repaint();	
         	}
         }
         else if(e.getKeyCode() == KeyEvent.VK_H) 
@@ -213,6 +223,21 @@ public class GameRunner implements KeyListener
 		{
 			return false;
 		}
+	}
+	
+	private boolean isExit(int r,int c)
+	{
+		try
+		{		
+			if (r <= GlobalsVars.MAZE_DIMENSION - 1 && c <= maze.getMaze()[r].length - 1 && maze.getMaze()[r][c].isGoalNode())
+			{
+				return true;
+			}
+			else
+				return false;
+		}catch(Exception e ){e.toString();}
+		
+		return false;
 	}
 	
 	private TileType isSomethingPickupable(int r, int c)
