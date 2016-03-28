@@ -5,6 +5,8 @@ import java.util.List;
 
 import ie.gmit.ai.GlobalsVars;
 import ie.gmit.food.Food;
+import ie.gmit.fuzzy.Hunger;
+import ie.gmit.fuzzy.HungerStatus;
 import ie.gmit.tile.TilePiece;
 import ie.gmit.tile.TileType;
 import ie.gmit.weapon.Weapon;
@@ -17,11 +19,53 @@ public class Player extends TilePiece
 	private int currentWeaponPosition = 0;
 	private List<Food> InventoryFood = new ArrayList<Food>();
 	private List<Weapon> InventoryWeapons = new ArrayList<Weapon>();
+	private Hunger h;
 	
 	public Player(int health,int x, int z) 
 	{
 		super(TileType.PLAYER, x, z);
 		this.health = health;
+		h = new Hunger();
+	}
+	
+	public int getAttack()
+	{
+		int x = getCurrentWeapon().getAttackValue();
+		
+		if(getHungryStatus() == HungerStatus.WEAK)
+		{
+			if(x - 8 <= 0)
+				return 0;
+			else
+				x -= 8;
+			
+			return x;
+		}
+		else if(getHungryStatus() == HungerStatus.WEAKEST)
+		{
+			if(x - 6 <= 0)
+				return 0;
+			else
+				x -= 6;
+			
+			return x;
+		}
+		
+		return x;
+	}
+	
+	public void weaponUsed()
+	{
+		if(canUseWeapon())
+		{
+			getCurrentWeapon().weaponUsed();
+			
+			if(getCurrentWeapon().getDurabilityValue() == 0)
+			{				
+				InventoryWeapons.remove(currentWeaponPosition);
+				currentWeaponPosition = 0;
+			}
+		}
 	}
 	
 	public void setHealth(int health)
@@ -168,8 +212,8 @@ public class Player extends TilePiece
 		}
 	}
 	
-	public String getHungryStatus()
+	public HungerStatus getHungryStatus()
 	{
-		return "Current Hungry Status";
+		return h.howHungryAmI(getHealth(),getHunger());
 	}
 }

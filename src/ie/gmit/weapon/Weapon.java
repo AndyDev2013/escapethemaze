@@ -28,5 +28,10 @@ public class Weapon extends TilePiece implements Wieldable {
 	public int getDurabilityValue() {
 		return this.durabilityValue;
 	}
+	
+	public void weaponUsed()
+	{
+		this.durabilityValue--;
+	}
 
 }

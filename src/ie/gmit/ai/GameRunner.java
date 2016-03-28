@@ -8,7 +8,6 @@ import java.awt.event.KeyListener;
 import javax.swing.JFrame;
 
 import ie.gmit.entity.Player;
-import ie.gmit.food.Food;
 import ie.gmit.maze.GeneratorAlgorithm;
 import ie.gmit.tile.TileType;
 

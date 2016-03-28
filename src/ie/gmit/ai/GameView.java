@@ -204,7 +204,7 @@ public class GameView extends JPanel implements ActionListener
 			        
 			        g2.drawString("Hunger: " + GlobalsVars.player.getHunger(), 10, (GlobalsVars.ImageSize * GlobalsVars.drawRows) + 50);
 			        
-			        g2.drawString(GlobalsVars.player.getHungryStatus(), 10, (GlobalsVars.ImageSize * GlobalsVars.drawRows) + 80);
+			        g2.drawString(String.valueOf(GlobalsVars.player.getHungryStatus()), 10, (GlobalsVars.ImageSize * GlobalsVars.drawRows) + 80);
 			        
 			        g2.drawString("Weapons Collected: " + GlobalsVars.player.getWeaponCount(), 10, (GlobalsVars.ImageSize * GlobalsVars.drawRows) + 110);
 			        
