@@ -21,8 +21,8 @@ public class GlobalsVars {
 	public static final int INFO_PANEL_SIZE = DEFAULT_VIEW_SIZE - (GlobalsVars.ImageSize * GlobalsVars.drawRows);
 	public static final int ImageSize = 160;
 	
+	public static boolean HELP_SCREEN = true;
 	public static boolean ZOOM_OUT = false;
-	public static boolean HELP_SCREEN = false;
 	public static boolean WON_GAME = false; 
 	
 	public static double SMALL_IMAGE_SIZE_WIDTH = (double)GlobalsVars.DEFAULT_VIEW_SIZE / (double)GlobalsVars.MAZE_DIMENSION;
@@ -30,6 +30,8 @@ public class GlobalsVars {
 	
 	public static int WEAPON_SPAWN_COUNT = 20;
 	public static int FOOD_SPAWN_COUNT = 20;
+	
+	public static int TIMER_SPEED = 200;
 	
 	// Global Player Variables
 

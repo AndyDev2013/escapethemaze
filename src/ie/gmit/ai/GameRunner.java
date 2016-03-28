@@ -231,6 +231,7 @@ public class GameRunner implements KeyListener
 		{		
 			if (r <= GlobalsVars.MAZE_DIMENSION - 1 && c <= maze.getMaze()[r].length - 1 && maze.getMaze()[r][c].isGoalNode())
 			{
+				GlobalsVars.TIMER_SPEED = 1;
 				return true;
 			}
 			else

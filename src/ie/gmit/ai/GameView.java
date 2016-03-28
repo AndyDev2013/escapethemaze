@@ -33,7 +33,7 @@ public class GameView extends JPanel implements ActionListener
 		this.maze = maze;
 		setBackground(Color.BLACK);
 		setDoubleBuffered(true);
-		timer = new Timer(300, this);
+		timer = new Timer(GlobalsVars.TIMER_SPEED, this);
 		timer.start();
 	}
 
@@ -49,8 +49,6 @@ public class GameView extends JPanel implements ActionListener
         
         int rowMult = 0;
         int colMult = 0;
-        
-        //System.out.println(GlobalsVars.playerPositionX + " : " + GlobalsVars.playerPositionZ);
         
         if(!GlobalsVars.WON_GAME)
         {        
@@ -326,11 +324,31 @@ public class GameView extends JPanel implements ActionListener
 	        	catch (IOException e){e.printStackTrace();}
 	        	
 	        	g2.drawImage(backimage, 0, 0, GlobalsVars.DEFAULT_VIEW_SIZE, GlobalsVars.DEFAULT_VIEW_SIZE, null);
+	        	
+	        	g2.setColor(Color.black);
+	        	g2.drawString("Press H to close and open these hints", GlobalsVars.DEFAULT_VIEW_SIZE / 2 - 160, 100);
+	        	g2.drawString("Use the arrow keys to run around or WASD", GlobalsVars.DEFAULT_VIEW_SIZE / 2 - 180, 170);
+	        	g2.drawString("Press E to consume the selected food in your inventory", GlobalsVars.DEFAULT_VIEW_SIZE / 2 - 200, 230);
+	        	g2.drawString("Press , to cycle through your collected weapons", GlobalsVars.DEFAULT_VIEW_SIZE / 2 - 180, 290);
+	        	g2.drawString("Press / to cycle through your collected food", GlobalsVars.DEFAULT_VIEW_SIZE / 2 - 180, 340);
+	        	g2.setColor(Color.red);
+	        	g2.drawString("To cheat and see the whole map press Z", GlobalsVars.DEFAULT_VIEW_SIZE / 2 - 160, 400);
+	        	g2.setColor(Color.black);
+	        	g2.drawString("Try find the door...", GlobalsVars.DEFAULT_VIEW_SIZE / 2 - 67, 530);
+	        	
+	        	try 
+	        	{
+					backimage = ImageIO.read(new java.io.File("Images/door.png"));
+					g2.drawImage(backimage, GlobalsVars.DEFAULT_VIEW_SIZE / 2 - 60, 550, GlobalsVars.ImageSize, GlobalsVars.ImageSize, null);
+				} 
+	        	catch (IOException e){e.printStackTrace();}
 	        }
         }
         else
-        {        	
-        	double offset = 20;
+        {   
+        	// WIN SCREEN
+        	
+        	double offset = 25;
         	
         	double r = 0;
         	double c = 0;
@@ -340,7 +358,7 @@ public class GameView extends JPanel implements ActionListener
         		for(int j = 0;j < GlobalsVars.DEFAULT_VIEW_SIZE / offset;j++)
         		{	   
                 	Rectangle2D r2d;     	
-		        	g2.setColor(new Color(GlobalsVars.RandomNumber(255),GlobalsVars.RandomNumber(255),GlobalsVars.RandomNumber(255),GlobalsVars.RandomNumber(255)));
+		        	g2.setColor(new Color(255,255,255,GlobalsVars.RandomNumber(255)));
 		        	r2d = new Rectangle2D.Float((float)r,(float)c, (float)offset, (float)offset);		        	
 				    g2.fill(r2d);
 					g2.draw(r2d);
