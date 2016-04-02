@@ -2,12 +2,16 @@ package ie.gmit.ai;
 
 import java.util.Random;
 
+import ie.gmit.entity.MazeEntity;
 import ie.gmit.entity.Player;
+import ie.gmit.food.Apple;
+import ie.gmit.food.ChickenLeg;
+import ie.gmit.food.Food;
 import ie.gmit.tile.TilePiece;
 import ie.gmit.tile.TileType;
 
-public class GlobalsVars {
-
+public class GlobalsVars
+{
 	static Random rand = new Random();
 	
 	// Global Variables
@@ -30,6 +34,7 @@ public class GlobalsVars {
 	
 	public static int WEAPON_SPAWN_COUNT = 20;
 	public static int FOOD_SPAWN_COUNT = 20;
+	public static int CAGE_SPAWN_COUNT = 20;
 	
 	public static int TIMER_SPEED = 200;
 	
@@ -42,6 +47,8 @@ public class GlobalsVars {
 	public static Player player;
 
 	public static int TurnCount = 0;
+	
+	public static MazeEntity GoalNode;
 	
 	// Player Tracking
 

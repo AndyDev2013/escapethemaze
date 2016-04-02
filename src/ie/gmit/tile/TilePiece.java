@@ -5,8 +5,6 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import ie.gmit.ai.GlobalsVars;
-
 public class TilePiece {
 
 	private TileType tileType;
@@ -57,14 +55,6 @@ public class TilePiece {
 			try 
 			{
 				image = ImageIO.read(new java.io.File("Images/cage.png"));
-			}
-			catch (IOException e){e.toString();}
-		}
-		else if(tileType == TileType.PLAYER)
-		{
-			try 
-			{
-				image = ImageIO.read(new java.io.File("Images/hero_idle.png"));
 			}
 			catch (IOException e){e.toString();}
 		}

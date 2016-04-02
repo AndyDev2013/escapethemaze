@@ -2,35 +2,13 @@ package ie.gmit.maze;
 
 public class Node {
 	public enum Direction {North, South, East, West};
-	private Node parent;
 	private Direction[] paths = null;
 	public boolean visited =  false;
 	public boolean goal;
 	private int row = -1;
 	private int col = -1;
 	private int distance;
-	
-	public Node(int row, int col) {
-		this.row = row;
-		this.col = col;
-	}
-
-	public int getRow() {
-		return row;
-	}
-
-	public int getCol() {
-		return col;
-	}
-
-	public Node getParent() {
-		return parent;
-	}
-
-	public void setParent(Node parent) {
-		this.parent = parent;
-	}
-	
+		
 	public boolean hasDirection(Direction direction){	
 		for (int i = 0; i < paths.length; i++) {
 			if (paths[i] == direction) return true;
@@ -77,39 +55,7 @@ public class Node {
 		
 		paths[index] = direction;
 	}
-
-	public boolean isVisited() {
-		return visited;
-	}
-
-	public void setVisited(boolean visited) {
-		this.visited = visited;
-	}
-
-	public boolean isGoalNode() {
-		return goal;
-	}
-
-	public void setGoalNode(boolean goal) {
-		this.goal = goal;
-	}
 	
-	public int getHeuristic(Node goal){
-		double x1 = this.col;
-		double y1 = this.row;
-		double x2 = goal.getCol();
-		double y2 = goal.getRow();
-		return (int) Math.sqrt(Math.pow((x2 - x1), 2) + Math.pow((y2 - y1), 2));
-	}
-	
-	public int getPathCost() {
-		return distance;
-	}
-
-	public void setPathCost(int distance) {
-		this.distance = distance;
-	}
-
 	public String toString() {
 		return "[" + row + "/" + col + "]";
 	}

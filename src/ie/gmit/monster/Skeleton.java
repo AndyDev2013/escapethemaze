@@ -1,5 +1,31 @@
 package ie.gmit.monster;
 
-public class Skeleton implements Fightable {
+import ie.gmit.tile.TilePiece;
+import ie.gmit.tile.TileType;
+
+public class Skeleton extends TilePiece implements Fightable {
+
+	public Skeleton(TileType tileType, int x, int z) {
+		super(tileType, x, z);
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public void deprecateHealth(int val) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int getAttack() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void makeDead() {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

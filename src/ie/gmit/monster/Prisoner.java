@@ -8,5 +8,10 @@ public class Prisoner extends TilePiece {
 	public Prisoner(TileType tileType, int x, int z) {
 		super(tileType, x, z);
 	}
+	
+	public void ShowPathToDoor()
+	{
+		
+	}
 
 }

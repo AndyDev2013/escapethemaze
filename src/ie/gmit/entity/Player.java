@@ -1,7 +1,11 @@
 package ie.gmit.entity;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.imageio.ImageIO;
 
 import ie.gmit.ai.GlobalsVars;
 import ie.gmit.food.Food;
@@ -21,11 +25,44 @@ public class Player extends TilePiece
 	private List<Weapon> InventoryWeapons = new ArrayList<Weapon>();
 	private Hunger h;
 	
+	private int imagePosition = 0;
+	List<BufferedImage> allFrames;
+	BufferedImage imageFrame1;
+	BufferedImage imageFrame2;
+	BufferedImage imageFrame3;
+		
 	public Player(int health,int x, int z) 
 	{
 		super(TileType.PLAYER, x, z);
 		this.health = health;
 		h = new Hunger();
+				
+		try 
+		{
+			imageFrame1 = ImageIO.read(new java.io.File("Images/hero_walk_1.png"));
+			imageFrame2 = ImageIO.read(new java.io.File("Images/hero_walk_2.png"));
+			imageFrame3 = ImageIO.read(new java.io.File("Images/hero_walk_3.png"));
+		}
+		catch (IOException e){e.toString();}
+		
+		allFrames = new ArrayList<BufferedImage>();
+		
+		if(imageFrame1 != null && imageFrame2 != null && imageFrame3 != null)
+		{
+			allFrames.add(imageFrame1);
+			allFrames.add(imageFrame2);
+			allFrames.add(imageFrame3);
+		}
+	}
+	
+	public BufferedImage getTileImage()
+	{
+		imagePosition++;
+		
+		if(imagePosition == allFrames.size())
+			imagePosition = 0;
+		
+		return allFrames.get(imagePosition);
 	}
 	
 	public int getAttack()

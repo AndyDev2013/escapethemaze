@@ -27,8 +27,8 @@ public class Maze {
 
 		placeFood(GlobalsVars.FOOD_SPAWN_COUNT);
 		placeWeapons(GlobalsVars.WEAPON_SPAWN_COUNT);
-		
 		placeDoor();
+		placeCages(GlobalsVars.CAGE_SPAWN_COUNT);
 	}
 	
 	public void initMaze()
@@ -41,6 +41,11 @@ public class Maze {
 				maze[row][col].setWall(true);
 			}
 		}
+	}
+	
+	public int getElementCount()
+	{
+		return maze.length;
 	}
 	
 	public void placeDoor()
@@ -56,6 +61,43 @@ public class Maze {
 		
 		maze[row][col] = new MazeEntity(row, col, new TilePiece(TileType.EXIT, row, col));
 		maze[row][col].setGoalNode(true);
+	}
+	
+	public void placeCages(int cageCount)
+	{
+		int row = 0;
+		int col = 0;		
+		int count = 0;
+		int tooLong = 0;
+		final int LIMIT = 200;		
+		
+		while(count < cageCount && tooLong < LIMIT)
+		{		
+			while(getMazeEntity(row, col).isWall())
+			{
+				row = GlobalsVars.RandomNumber(GlobalsVars.MAZE_DIMENSION);
+				col = GlobalsVars.RandomNumber(GlobalsVars.MAZE_DIMENSION);	
+				
+				++tooLong;
+			}
+			
+			int x = GlobalsVars.RandomNumber(2);	
+			
+			Food food;
+			
+			if(x == 0)
+				food = new Apple(row, col);
+			else
+				food = new ChickenLeg(row, col);				
+			
+			getMazeEntity(row, col).setTilepiece(food);		
+			getMazeEntity(row, col).setWall(false);
+			
+			row = GlobalsVars.RandomNumber(GlobalsVars.MAZE_DIMENSION);
+			col = GlobalsVars.RandomNumber(GlobalsVars.MAZE_DIMENSION);
+			
+			++count;
+		}
 	}
 	
 	private void buildMaze(GeneratorAlgorithm algorithm)
