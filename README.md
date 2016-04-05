@@ -1,6 +1,6 @@
 # AI Project
 
-The goal of the game is to navigate yourself through the maze to the door which ends in a an end screen. Which renders graysquares. You can pick up food and consume it as your hunger goes down and weapons.
+The goal of the game is to navigate yourself through the maze to the door which ends in a an end screen which renders graysquares. You can pick up food and consume it as your hunger goes down and weapons.
 
 ### Controls
 
@@ -35,4 +35,3 @@ Includes an FCL file to track hunger which was planned to be used for the battle
 
 The hint boxes show the player where to go and a random algorithm chosen from 
 The monsters have search algorithms into them but are currently mobile.
-
