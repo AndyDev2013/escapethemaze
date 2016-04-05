@@ -26,11 +26,19 @@ public class TilePiece {
 			catch (IOException e){e.toString();}
 			
 		}
-		if(tileType == TileType.WALL)
+		else if(tileType == TileType.WALL)
 		{
 			try 
 			{
 				image = ImageIO.read(new java.io.File("Images/wall.png"));
+			}
+			catch (IOException e){e.toString();}
+		}
+		else if(tileType == TileType.HINT)
+		{
+			try 
+			{
+				image = ImageIO.read(new java.io.File("Images/floorHint.png"));
 			}
 			catch (IOException e){e.toString();}
 		}

@@ -5,19 +5,26 @@ import java.awt.FlowLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.JFrame;
 
 import ie.gmit.entity.Player;
 import ie.gmit.maze.GeneratorAlgorithm;
+import ie.gmit.monster.HelpCage;
 import ie.gmit.tile.TileType;
 
 public class GameRunner implements KeyListener
 {
 	private GameView view;
 	private Maze maze;
+	private SoundManager soundManager;
 	
 	public GameRunner(GeneratorAlgorithm algorithm) throws Exception
 	{
+		soundManager = new SoundManager();
+		
 		maze = new Maze(algorithm,GlobalsVars.MAZE_DIMENSION, GlobalsVars.MAZE_DIMENSION);
 
     	view = new GameView(maze);
@@ -65,151 +72,181 @@ public class GameRunner implements KeyListener
 		
 		GlobalsVars.firstPositionPlayer(row,col, maze);
 	}
+	
+	public void playMusic()
+	{
+		soundManager.playMusic();	
+	}
 
     public void keyPressed(KeyEvent e) 
     { 
-    	if (e.getKeyCode() == KeyEvent.VK_Z)
-	    {
-	    	GlobalsVars.toggleZoom();
-
-	    	view.repaint();
-	    }
+    	view.repaint();
     	
-        if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D && GlobalsVars.playerPositionZ < GlobalsVars.MAZE_DIMENSION - 1) 
-        {    		
-    		if(isExit(GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ + 1))
-    			GlobalsVars.WON_GAME = true;
-    		
-        	if (isValidMove(GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ + 1))
-        	{
-        		if (isSomethingPickupable(GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ + 1) == TileType.FOOD)
-        		{
-        			GlobalsVars.player.pickupFood(maze.getMaze()[GlobalsVars.playerPositionX][GlobalsVars.playerPositionZ + 1].getTilePiece());
-        		}
-        		else if(isSomethingPickupable(GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ + 1) == TileType.WEAPON)
-        		{
-        			GlobalsVars.player.pickupWeapon(maze.getMaze()[GlobalsVars.playerPositionX][GlobalsVars.playerPositionZ + 1].getTilePiece());
-        		}
-        		
-        		GlobalsVars.updatePlayer(GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ, GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ + 1, maze);  		
-        	        	        		
-        		if(GlobalsVars.TurnCount % 20 == 0)
-        		{
-        			GlobalsVars.player.feelHunger();
-        		}
-        		
-        		GlobalsVars.TurnCount++;
-        		view.repaint();
-        	}
-        }
-        else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A && GlobalsVars.playerPositionZ > 0)
-        {         		
-    		if(isExit(GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ - 1))
-    			GlobalsVars.WON_GAME = true;
-        	
-        	if (isValidMove(GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ - 1))
-        	{
-            	if(isSomethingPickupable(GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ - 1) == TileType.FOOD)
-            	{
-            		GlobalsVars.player.pickupFood(maze.getMaze()[GlobalsVars.playerPositionX][GlobalsVars.playerPositionZ - 1].getTilePiece());
-            	}
-        		else if(isSomethingPickupable(GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ - 1) == TileType.WEAPON)
-        		{
-        			GlobalsVars.player.pickupWeapon(maze.getMaze()[GlobalsVars.playerPositionX][GlobalsVars.playerPositionZ - 1].getTilePiece());
-        		}				
-        		
-        		GlobalsVars.updatePlayer(GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ, GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ - 1, maze);  		
-	        	        		
-        		if(GlobalsVars.TurnCount % 20 == 0)
-        		{
-        			GlobalsVars.player.feelHunger();
-        		}
-        		
-        		GlobalsVars.TurnCount++;
-        		view.repaint();
-        	}
-        }
-        else if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W && GlobalsVars.playerPositionX > 0)
-        {     
-    		if(isExit(GlobalsVars.playerPositionX - 1, GlobalsVars.playerPositionZ))
-    			GlobalsVars.WON_GAME = true;
-        	
-        	if (isValidMove(GlobalsVars.playerPositionX - 1, GlobalsVars.playerPositionZ)) 
-        	{
-            	if(isSomethingPickupable(GlobalsVars.playerPositionX - 1, GlobalsVars.playerPositionZ) == TileType.FOOD)
-            	{
-            		GlobalsVars.player.pickupFood(maze.getMaze()[GlobalsVars.playerPositionX - 1][GlobalsVars.playerPositionZ].getTilePiece());
-            	}
-        		else if(isSomethingPickupable(GlobalsVars.playerPositionX - 1, GlobalsVars.playerPositionZ) == TileType.WEAPON)
-        		{
-        			GlobalsVars.player.pickupWeapon(maze.getMaze()[GlobalsVars.playerPositionX - 1][GlobalsVars.playerPositionZ].getTilePiece());
-        		}	
-        		
-        		GlobalsVars.updatePlayer(GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ, GlobalsVars.playerPositionX - 1, GlobalsVars.playerPositionZ, maze);
-        		        		
-        		if(GlobalsVars.TurnCount % 20 == 0)
-        		{
-        			GlobalsVars.player.feelHunger();
-        		}      		
-       		
-        		GlobalsVars.TurnCount++;
-        		
-        		view.repaint();	
-        	}
-        }
-        else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S && GlobalsVars.playerPositionX < GlobalsVars.MAZE_DIMENSION  - 1) 
-        {        
-    		if(isExit(GlobalsVars.playerPositionX + 1, GlobalsVars.playerPositionZ))
-    			GlobalsVars.WON_GAME = true;
-        	
-        	if (isValidMove(GlobalsVars.playerPositionX + 1, GlobalsVars.playerPositionZ)) 
-        	{
-            	if(isSomethingPickupable(GlobalsVars.playerPositionX + 1, GlobalsVars.playerPositionZ) == TileType.FOOD) 
-            	{
-            		GlobalsVars.player.pickupFood(maze.getMaze()[GlobalsVars.playerPositionX + 1][GlobalsVars.playerPositionZ].getTilePiece());
-            	}
-        		else if(isSomethingPickupable(GlobalsVars.playerPositionX + 1, GlobalsVars.playerPositionZ) == TileType.WEAPON)
-        		{
-        			GlobalsVars.player.pickupWeapon(maze.getMaze()[GlobalsVars.playerPositionX + 1][GlobalsVars.playerPositionZ].getTilePiece());
-        		}	
-        		
-        		GlobalsVars.updatePlayer(GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ, GlobalsVars.playerPositionX + 1, GlobalsVars.playerPositionZ, maze);
-        		        		
-        		if(GlobalsVars.TurnCount % 20 == 0)
-        		{
-        			GlobalsVars.player.feelHunger();
-        		}        		
-        		
-        		GlobalsVars.TurnCount++;
-
-        		view.repaint();	
-        	}
-        }
-        else if(e.getKeyCode() == KeyEvent.VK_H) 
+        if(!GlobalsVars.HELP_SCREEN)
+        {    	        
+	        if (e.getKeyCode() == KeyEvent.VK_Z)
+		    {
+		    	GlobalsVars.toggleZoom();
+		    }		    	
+	        if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D && GlobalsVars.playerPositionZ < GlobalsVars.MAZE_DIMENSION - 1) 
+	        {    		
+	    		if(isExit(GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ + 1))
+	    			GlobalsVars.WON_GAME = true;
+	    		
+	    		if(isHelp(GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ + 1))
+	    		{
+	    			HelpCage help = (HelpCage) maze.getMazeEntity(GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ + 1).getTilePiece();
+	    			help.ShowPathToDoor(maze);
+	    		}		    			
+	    			
+	        	if (isValidMove(GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ + 1))
+	        	{
+	        		if (isSomethingPickupable(GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ + 1) == TileType.FOOD)
+	        		{
+	        			GlobalsVars.player.pickupFood(maze.getMaze()[GlobalsVars.playerPositionX][GlobalsVars.playerPositionZ + 1].getTilePiece());
+	        		}
+	        		else if(isSomethingPickupable(GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ + 1) == TileType.WEAPON)
+	        		{
+	        			GlobalsVars.player.pickupWeapon(maze.getMaze()[GlobalsVars.playerPositionX][GlobalsVars.playerPositionZ + 1].getTilePiece());
+	        		}
+	        		
+	        		GlobalsVars.updatePlayer(GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ, GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ + 1, maze);  		
+	        	        	        		
+	        		if(GlobalsVars.TurnCount % 20 == 0)
+	        		{
+	        			GlobalsVars.player.feelHunger();
+	        		}
+	        		
+	        		GlobalsVars.TurnCount++;
+	        	}
+	        }
+	        else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A && GlobalsVars.playerPositionZ > 0)
+	        {         		
+	    		if(isExit(GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ - 1))
+	    			GlobalsVars.WON_GAME = true;
+	    		
+	    		if(isHelp(GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ - 1))
+	    		{
+	    			HelpCage help = (HelpCage) maze.getMazeEntity(GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ - 1).getTilePiece();
+	    			help.ShowPathToDoor(maze);
+	    		}	
+	        	
+	        	if (isValidMove(GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ - 1))
+	        	{
+	            	if(isSomethingPickupable(GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ - 1) == TileType.FOOD)
+	            	{
+	            		GlobalsVars.player.pickupFood(maze.getMaze()[GlobalsVars.playerPositionX][GlobalsVars.playerPositionZ - 1].getTilePiece());
+	            	}
+	        		else if(isSomethingPickupable(GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ - 1) == TileType.WEAPON)
+	        		{
+	        			GlobalsVars.player.pickupWeapon(maze.getMaze()[GlobalsVars.playerPositionX][GlobalsVars.playerPositionZ - 1].getTilePiece());
+	        		}				
+	        		
+	        		GlobalsVars.updatePlayer(GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ, GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ - 1, maze);  		
+		        	        		
+	        		if(GlobalsVars.TurnCount % 20 == 0)
+	        		{
+	        			GlobalsVars.player.feelHunger();
+	        		}
+	        		
+	        		GlobalsVars.TurnCount++;
+	        	}
+	        }
+	        else if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W && GlobalsVars.playerPositionX > 0)
+	        {     
+	    		if(isExit(GlobalsVars.playerPositionX - 1, GlobalsVars.playerPositionZ))
+	    			GlobalsVars.WON_GAME = true;
+	    		
+	    		if(isHelp(GlobalsVars.playerPositionX - 1, GlobalsVars.playerPositionZ))
+	    		{
+	    			HelpCage help = (HelpCage) maze.getMazeEntity(GlobalsVars.playerPositionX - 1, GlobalsVars.playerPositionZ).getTilePiece();
+	    			help.ShowPathToDoor(maze);
+	    		}	
+	        	
+	        	if (isValidMove(GlobalsVars.playerPositionX - 1, GlobalsVars.playerPositionZ)) 
+	        	{
+	            	if(isSomethingPickupable(GlobalsVars.playerPositionX - 1, GlobalsVars.playerPositionZ) == TileType.FOOD)
+	            	{
+	            		GlobalsVars.player.pickupFood(maze.getMaze()[GlobalsVars.playerPositionX - 1][GlobalsVars.playerPositionZ].getTilePiece());
+	            	}
+	        		else if(isSomethingPickupable(GlobalsVars.playerPositionX - 1, GlobalsVars.playerPositionZ) == TileType.WEAPON)
+	        		{
+	        			GlobalsVars.player.pickupWeapon(maze.getMaze()[GlobalsVars.playerPositionX - 1][GlobalsVars.playerPositionZ].getTilePiece());
+	        		}	
+	        		
+	        		GlobalsVars.updatePlayer(GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ, GlobalsVars.playerPositionX - 1, GlobalsVars.playerPositionZ, maze);
+	        		        		
+	        		if(GlobalsVars.TurnCount % 20 == 0)
+	        		{
+	        			GlobalsVars.player.feelHunger();
+	        		}      		
+	       		
+	        		GlobalsVars.TurnCount++;
+	        	}
+	        }
+	        else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S && GlobalsVars.playerPositionX < GlobalsVars.MAZE_DIMENSION  - 1) 
+	        {        
+	    		if(isExit(GlobalsVars.playerPositionX + 1, GlobalsVars.playerPositionZ))
+	    			GlobalsVars.WON_GAME = true;
+	    		
+	    		if(isHelp(GlobalsVars.playerPositionX + 1, GlobalsVars.playerPositionZ))
+	    		{
+	    			HelpCage help = (HelpCage) maze.getMazeEntity(GlobalsVars.playerPositionX + 1, GlobalsVars.playerPositionZ).getTilePiece();
+	    			help.ShowPathToDoor(maze);
+	    		}
+	        	
+	        	if (isValidMove(GlobalsVars.playerPositionX + 1, GlobalsVars.playerPositionZ)) 
+	        	{
+	            	if(isSomethingPickupable(GlobalsVars.playerPositionX + 1, GlobalsVars.playerPositionZ) == TileType.FOOD) 
+	            	{
+	            		GlobalsVars.player.pickupFood(maze.getMaze()[GlobalsVars.playerPositionX + 1][GlobalsVars.playerPositionZ].getTilePiece());
+	            	}
+	        		else if(isSomethingPickupable(GlobalsVars.playerPositionX + 1, GlobalsVars.playerPositionZ) == TileType.WEAPON)
+	        		{
+	        			GlobalsVars.player.pickupWeapon(maze.getMaze()[GlobalsVars.playerPositionX + 1][GlobalsVars.playerPositionZ].getTilePiece());
+	        		}	
+	        		
+	        		GlobalsVars.updatePlayer(GlobalsVars.playerPositionX, GlobalsVars.playerPositionZ, GlobalsVars.playerPositionX + 1, GlobalsVars.playerPositionZ, maze);
+	        		        		
+	        		if(GlobalsVars.TurnCount % 20 == 0)
+	        		{
+	        			GlobalsVars.player.feelHunger();
+	        		}        		
+	        		
+	        		GlobalsVars.TurnCount++;
+	        	}
+	        }
+	        else if(e.getKeyCode() == KeyEvent.VK_E)
+	        {
+	        	GlobalsVars.player.eatCurrentFood();
+	        }
+	        else if(e.getKeyCode() == KeyEvent.VK_SLASH) 
+	        {
+	        	GlobalsVars.player.cycleFood();
+	        }
+	        else if(e.getKeyCode() == KeyEvent.VK_PERIOD) 
+	        {
+	        	GlobalsVars.player.cycleWeapons();
+	        }  
+        }  	
+        
+        if(e.getKeyCode() == KeyEvent.VK_H) 
         {
         	GlobalsVars.toggleHelp();
         	view.repaint();
         }
-        else if(e.getKeyCode() == KeyEvent.VK_E)
+        else if(e.getKeyCode() == KeyEvent.VK_M)
         {
-        	GlobalsVars.player.eatCurrentFood();
-        	view.repaint();
+        	soundManager.playMusic();
         }
-        else if(e.getKeyCode() == KeyEvent.VK_SLASH) 
-        {
-        	GlobalsVars.player.cycleFood();
-        	view.repaint();
-        }
-        else if(e.getKeyCode() == KeyEvent.VK_PERIOD) 
-        {
-        	GlobalsVars.player.cycleWeapons();
-        	view.repaint();
-        }
-        else
-        {
-        	return;
-        }     
-    	
+    }
+    
+    private boolean isHelp(int x,int z)
+    {
+    	if(maze.getMazeEntity(x, z).getTilePiece().getTileType() == TileType.HELP)
+    		return true;
+    	else 
+    		return false;
     }
     
 	private boolean isValidMove(int r, int c)

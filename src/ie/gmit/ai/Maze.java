@@ -1,11 +1,15 @@
 package ie.gmit.ai;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ie.gmit.entity.MazeEntity;
 import ie.gmit.food.Apple;
 import ie.gmit.food.ChickenLeg;
 import ie.gmit.food.Food;
 import ie.gmit.maze.GeneratorAlgorithm;
 import ie.gmit.maze.MazeGeneratorFactory;
+import ie.gmit.monster.HelpCage;
 import ie.gmit.tile.TilePiece;
 import ie.gmit.tile.TileType;
 import ie.gmit.weapon.Bomb;
@@ -16,6 +20,7 @@ import ie.gmit.weapon.Weapon;
 public class Maze {
 	
 	private MazeEntity[][] maze;
+	private List<HelpCage> helpCages = new ArrayList<HelpCage>();
 	
 	public Maze(GeneratorAlgorithm algorithm,int rows, int cols){
 		
@@ -25,11 +30,23 @@ public class Maze {
 		
 		buildMaze(algorithm);
 
+		placeDoor();
 		placeFood(GlobalsVars.FOOD_SPAWN_COUNT);
 		placeWeapons(GlobalsVars.WEAPON_SPAWN_COUNT);
-		placeDoor();
 		placeCages(GlobalsVars.CAGE_SPAWN_COUNT);
+		
+		//TEST();
 	}
+	
+	/*				*/	
+	public void TEST()
+	{
+		for(HelpCage h : helpCages)
+		{
+			h.ShowPathToDoor(this);
+		}
+	}	
+	/*				*/
 	
 	public void initMaze()
 	{
@@ -39,6 +56,17 @@ public class Maze {
 			{
 				maze[row][col] = new MazeEntity(row, col, new TilePiece(TileType.WALL, row, col));
 				maze[row][col].setWall(true);
+			}
+		}
+	}	
+	
+	public void unvistMaze()
+	{
+		for (int row = 0; row < GlobalsVars.MAZE_DIMENSION; row++)
+		{
+			for (int col = 0; col < GlobalsVars.MAZE_DIMENSION; col++)
+			{
+				maze[row][col].setVisited(false);
 			}
 		}
 	}
@@ -61,12 +89,14 @@ public class Maze {
 		
 		maze[row][col] = new MazeEntity(row, col, new TilePiece(TileType.EXIT, row, col));
 		maze[row][col].setGoalNode(true);
+		
+		GlobalsVars.GoalNode = maze[row][col];
 	}
 	
 	public void placeCages(int cageCount)
 	{
-		int row = 0;
-		int col = 0;		
+		int row = GlobalsVars.RandomNumber(GlobalsVars.MAZE_DIMENSION);
+		int col = GlobalsVars.RandomNumber(GlobalsVars.MAZE_DIMENSION);		
 		int count = 0;
 		int tooLong = 0;
 		final int LIMIT = 200;		
@@ -79,22 +109,17 @@ public class Maze {
 				col = GlobalsVars.RandomNumber(GlobalsVars.MAZE_DIMENSION);	
 				
 				++tooLong;
-			}
+			}	
 			
-			int x = GlobalsVars.RandomNumber(2);	
+			HelpCage help = new HelpCage(TileType.HELP, row, col);				
 			
-			Food food;
-			
-			if(x == 0)
-				food = new Apple(row, col);
-			else
-				food = new ChickenLeg(row, col);				
-			
-			getMazeEntity(row, col).setTilepiece(food);		
-			getMazeEntity(row, col).setWall(false);
+			getMazeEntity(row, col).setTilepiece(help);		
+			getMazeEntity(row, col).setWall(true);
 			
 			row = GlobalsVars.RandomNumber(GlobalsVars.MAZE_DIMENSION);
 			col = GlobalsVars.RandomNumber(GlobalsVars.MAZE_DIMENSION);
+			
+			helpCages.add(help);
 			
 			++count;
 		}

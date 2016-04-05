@@ -1,9 +1,7 @@
 package ie.gmit.weapon;
 
 import java.awt.image.BufferedImage;
-
 import javax.imageio.ImageIO;
-
 import ie.gmit.tile.TileType;
 
 public class Bomb extends Weapon implements Explodable{
@@ -35,6 +33,4 @@ public class Bomb extends Weapon implements Explodable{
 	public int getDamageRadius() {
 		return this.damageRadius;
 	}
-
-	
 }

@@ -83,8 +83,7 @@ public class GameView extends JPanel implements ActionListener
 			        }
 		        }
 		        else
-		        {
-		
+		        {		
 		        	double rowMultf = 0;
 		        	double colMultf = 0;
 		        	        	
@@ -93,8 +92,8 @@ public class GameView extends JPanel implements ActionListener
 		            	for (int col = 0; col < GlobalsVars.MAZE_DIMENSION; col++)
 		            	{         		        		
 		            		try
-		            		{     	           			            			
-		            			if(maze.getMaze()[row][col].isWall())
+		            		{		  		   		            			
+		            			if(maze.getMaze()[row][col].containsType(TileType.WALL))
 		            			{
 		            				g2.setColor(Color.BLACK);
 		            				           
@@ -150,13 +149,21 @@ public class GameView extends JPanel implements ActionListener
 		            			    g2.fill(r2d);
 		            				g2.draw(r2d);          				
 		            			}
+		            			else if(maze.getMaze()[row][col].containsType(TileType.HINT))
+		            			{
+		            				g2.setColor(Color.WHITE);
+		            				           
+		            				Rectangle2D r2d = new Rectangle2D.Float((float)colMultf, (float)rowMultf, (float)smallImageSizeWidth, (float)smallImageSizeHeight);
+		            			    g2.fill(r2d);
+		            				g2.draw(r2d);
+		            			}	
 		            			else
 		            			{
 		            				g2.setColor(Color.LIGHT_GRAY);
 		            				Rectangle2D r2d = new Rectangle2D.Float((float)colMultf, (float)rowMultf, (float)smallImageSizeWidth, (float)smallImageSizeHeight);
 		            			    g2.fill(r2d);
 		            				g2.draw(r2d);
-		            			}
+		            			}         			
 		            		}
 		            		catch(Exception e)
 		            		{
@@ -193,20 +200,15 @@ public class GameView extends JPanel implements ActionListener
 			        
 			        // Draw Hungry Status
 			        
-			        g2.drawString("Turn Count: " + GlobalsVars.TurnCount, 660, (GlobalsVars.ImageSize * GlobalsVars.drawRows) + 20);
-			        
+			        g2.drawString("Turn Count: " + GlobalsVars.TurnCount, 660, (GlobalsVars.ImageSize * GlobalsVars.drawRows) + 20);			        
 			        g2.drawString(GlobalsVars.currentTime(), 660 ,(GlobalsVars.ImageSize * GlobalsVars.drawRows) + 50);
 			        
 			        // Draw Turn Count
 			        
-			        g2.drawString("Health: " + GlobalsVars.player.getHealth(), 10, (GlobalsVars.ImageSize * GlobalsVars.drawRows) + 20);
-			        
-			        g2.drawString("Hunger: " + GlobalsVars.player.getHunger(), 10, (GlobalsVars.ImageSize * GlobalsVars.drawRows) + 50);
-			        
-			        g2.drawString(String.valueOf(GlobalsVars.player.getHungryStatus()), 10, (GlobalsVars.ImageSize * GlobalsVars.drawRows) + 80);
-			        
-			        g2.drawString("Weapons Collected: " + GlobalsVars.player.getWeaponCount(), 10, (GlobalsVars.ImageSize * GlobalsVars.drawRows) + 110);
-			        
+			        g2.drawString("Health: " + GlobalsVars.player.getHealth(), 10, (GlobalsVars.ImageSize * GlobalsVars.drawRows) + 20);			        
+			        g2.drawString("Hunger: " + GlobalsVars.player.getHunger(), 10, (GlobalsVars.ImageSize * GlobalsVars.drawRows) + 50);			        
+			        g2.drawString(String.valueOf(GlobalsVars.player.getHungryStatus()), 10, (GlobalsVars.ImageSize * GlobalsVars.drawRows) + 80);			        
+			        g2.drawString("Weapons Collected: " + GlobalsVars.player.getWeaponCount(), 10, (GlobalsVars.ImageSize * GlobalsVars.drawRows) + 110);			        
 			        g2.drawString("Food Collected: " + GlobalsVars.player.getFoodCount(), 10, (GlobalsVars.ImageSize * GlobalsVars.drawRows) + 140);
 			        
 			        String wp,fp;
@@ -326,14 +328,15 @@ public class GameView extends JPanel implements ActionListener
 	        	
 	        	g2.setColor(Color.black);
 	        	g2.drawString("Press H to close and open these hints", GlobalsVars.DEFAULT_VIEW_SIZE / 2 - 160, 100);
-	        	g2.drawString("Use the arrow keys to run around or WASD", GlobalsVars.DEFAULT_VIEW_SIZE / 2 - 180, 170);
-	        	g2.drawString("Press E to consume the selected food in your inventory", GlobalsVars.DEFAULT_VIEW_SIZE / 2 - 200, 230);
-	        	g2.drawString("Press , to cycle through your collected weapons", GlobalsVars.DEFAULT_VIEW_SIZE / 2 - 180, 290);
+	        	g2.drawString("Use the arrow keys to run around or WASD", GlobalsVars.DEFAULT_VIEW_SIZE / 2 - 180, 160);
+	        	g2.drawString("Press E to consume the selected food in your inventory", GlobalsVars.DEFAULT_VIEW_SIZE / 2 - 200, 220);
+	        	g2.drawString("Press , to cycle through your collected weapons", GlobalsVars.DEFAULT_VIEW_SIZE / 2 - 180, 280);
 	        	g2.drawString("Press / to cycle through your collected food", GlobalsVars.DEFAULT_VIEW_SIZE / 2 - 180, 340);
+	        	g2.drawString("Press M to stop and start the music", GlobalsVars.DEFAULT_VIEW_SIZE / 2 - 152, 400);
 	        	g2.setColor(Color.red);
-	        	g2.drawString("To cheat and see the whole map press Z", GlobalsVars.DEFAULT_VIEW_SIZE / 2 - 160, 400);
+	        	g2.drawString("To cheat and see the whole map press Z", GlobalsVars.DEFAULT_VIEW_SIZE / 2 - 180, 460);
 	        	g2.setColor(Color.black);
-	        	g2.drawString("Try find the door...", GlobalsVars.DEFAULT_VIEW_SIZE / 2 - 67, 530);
+	        	g2.drawString("Try find the door...", GlobalsVars.DEFAULT_VIEW_SIZE / 2 - 67, 540);
 	        	
 	        	try 
 	        	{

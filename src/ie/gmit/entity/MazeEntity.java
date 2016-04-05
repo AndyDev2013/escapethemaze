@@ -5,8 +5,7 @@ import java.util.List;
 
 import ie.gmit.ai.GlobalsVars;
 import ie.gmit.ai.Maze;
-import ie.gmit.maze.Node;
-import ie.gmit.maze.Node.Direction;
+import ie.gmit.maze.Direction;
 import ie.gmit.tile.TilePiece;
 import ie.gmit.tile.TileType;
 
@@ -28,45 +27,53 @@ public class MazeEntity {
 		this.z = z;
 		this.tilePiece = tile;
 	}
-	
-	public int getHeuristic(){
-		double x1 = this.getX();
-		double y1 = this.getZ();
-		double x2 = GlobalsVars.GoalNode.getX();
-		double y2 = GlobalsVars.GoalNode.getZ();
+
+	public int getHeuristic(MazeEntity goal){
+		double x1 = this.x;
+		double y1 = this.z;
+		double x2 = goal.getX();
+		double y2 = goal.getZ();
 		return (int) Math.sqrt(Math.pow((x2 - x1), 2) + Math.pow((y2 - y1), 2));
 	}
 	
 	public boolean hasDirection(Direction direction)
 	{	
+		if(paths == null)
+			return false;
+		
 		for (int i = 0; i < paths.length; i++) 
 		{
-			if (paths[i] == direction) return true;
+			if (paths[i] == direction)
+			{
+				//System.out.println("Test");
+				return true;
+			}
 		}
+		
 		return false;
 	}
-	
-	public MazeEntity[] children(Maze maze){		
+	public MazeEntity[] children(Maze maze)
+	{		
 		List<MazeEntity> children = new ArrayList<MazeEntity>();
 				
 		if (x > 0 && maze.getMazeEntity(x - 1,z).hasDirection(Direction.South))
 		{
-			children.add(maze.getMazeEntity(x - 1,z)); //Add North
+			children.add(maze.getMazeEntity(x - 1,z));
 		}
 		
-		if (x < maze.getElementCount() - 1 && maze.getMazeEntity(x + 1,z).hasDirection(Direction.North))
+		if (x < maze.getMaze().length - 1 && maze.getMazeEntity(x + 1,z).hasDirection(Direction.North))
 		{
-			children.add(maze.getMazeEntity(x + 1,z)); //Add South
+			children.add(maze.getMazeEntity(x + 1,z));
 		}
 		
 		if (z > 0 && maze.getMazeEntity(x,z - 1).hasDirection(Direction.East))
 		{
-			children.add(maze.getMazeEntity(x,z - 1)); //Add West
+			children.add(maze.getMazeEntity(x,z - 1));
 		}
 		
-		if (z <maze.getElementCount() - 1 && maze.getMazeEntity(x,z + 1).hasDirection(Direction.West)) 
+		if (z < maze.getMaze().length - 1 && maze.getMazeEntity(x,z + 1).hasDirection(Direction.West)) 
 		{
-			children.add(maze.getMazeEntity(x,z + 1)); //Add East
+			children.add(maze.getMazeEntity(x,z + 1));
 		}
 		
 		return (MazeEntity[]) children.toArray(new MazeEntity[children.size()]);
@@ -84,7 +91,8 @@ public class MazeEntity {
 		{
 			index = paths.length;
 			Direction[] temp = new Direction[index + 1];
-			for (int i = 0; i < paths.length; i++) temp[i] = paths[i];
+			for (int i = 0; i < paths.length; i++) 
+				temp[i] = paths[i];
 			paths = temp;
 		}
 		
@@ -101,7 +109,7 @@ public class MazeEntity {
 		}
 		
 		
-		if (x < GlobalsVars.MAZE_DIMENSION - 1) 
+		if (x < maze.getMaze().length - 1) 
 		{
 			adjacents.add(maze.getMazeEntity(x + 1,z)); //Add South
 		}
@@ -113,7 +121,7 @@ public class MazeEntity {
 		}
 		
 		
-		if (z < GlobalsVars.MAZE_DIMENSION - 1) 
+		if (z < maze.getMaze()[x].length - 1) 
 		{
 			adjacents.add(maze.getMazeEntity(x,z + 1)); //Add East
 		}		
@@ -121,11 +129,13 @@ public class MazeEntity {
 		return (MazeEntity[]) adjacents.toArray(new MazeEntity[adjacents.size()]);
 	}	
 	
-	public MazeEntity getParent() {
+	public MazeEntity getParent() 
+	{
 		return this.parent;
 	}
 
-	public void setParent(MazeEntity parent) {
+	public void setParent(MazeEntity parent) 
+	{
 		this.parent = parent;
 	}
 	
@@ -151,6 +161,11 @@ public class MazeEntity {
 	{
 		GlobalsVars.GoalNode = this;
 		this.isGoalNode = flag;
+	}
+	
+	public void setVisited(boolean visted)
+	{
+		this.isVisted = visted;
 	}
 	
 	public void visitedNode()
@@ -192,7 +207,12 @@ public class MazeEntity {
 		return this.isWall;
 	}
 	
-	public int getPathCost() {
+	public void setPathCost(int distance) {
+		this.distance = distance;
+	}
+	
+	public int getPathCost() 
+	{
 		return this.distance;
 	}
 }

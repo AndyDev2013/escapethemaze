@@ -10,7 +10,16 @@ public class BinaryTreeMazeGenerator implements MazeGenerator
 	{
 		for (int row = 0; row < maze.length; row++)
 		{
-			for (int col = 0; col < maze[row].length; col++)
+			for (int col = 0; col < maze.length; col++)
+			{
+				maze[row][col] = new MazeEntity(row, col, new TilePiece(TileType.WALL, row, col));
+				maze[row][col].setWall(true);		
+			}
+		}
+		
+		for (int row = 0; row < maze.length; row++)
+		{
+			for (int col = 0; col < maze.length; col++)
 			{
 				int num = (int) (Math.random() * 10);
 				
@@ -18,11 +27,8 @@ public class BinaryTreeMazeGenerator implements MazeGenerator
 				{
 					try
 					{
-						if(maze[row][col - 1] != null)
-						{
-							maze[row][col - 1] = new MazeEntity(row, col, new TilePiece(TileType.FLOOR, row, col));
-							maze[row][col - 1].setWall(false);							
-						}
+						maze[row][col - 1] = new MazeEntity(row, col, new TilePiece(TileType.FLOOR, row, col));
+						maze[row][col - 1].setWall(false);					
 					}
 					catch(Exception e){e.toString();}
 				}
@@ -30,14 +36,40 @@ public class BinaryTreeMazeGenerator implements MazeGenerator
 				{
 					try
 					{
-						if(maze[row - 1][col] != null)
-						{
-							maze[row - 1][col] = new MazeEntity(row, col, new TilePiece(TileType.FLOOR, row, col));
-							maze[row - 1][col].setWall(false);							
-						}
+						maze[row - 1][col] = new MazeEntity(row, col, new TilePiece(TileType.FLOOR, row, col));
+						maze[row - 1][col].setWall(false);				
 					}
 					catch(Exception e){e.toString();}
 				}	
+			}
+		}
+		
+		for (int row = 0; row < maze.length; row++)
+		{
+			for (int col = 0; col < maze.length; col++)
+			{
+				try
+				{
+					if(!maze[row - 1][col].isWall())
+						maze[row - 1][col].addPath(Direction.North);						
+						
+				}catch(Exception e){e.toString();};
+				try
+				{
+					if(!maze[row + 1][col].isWall())
+						maze[row + 1][col].addPath(Direction.South);	
+					
+				}catch(Exception e){e.toString();};
+				try
+				{
+					if(!maze[row][col - 1].isWall())
+						maze[row][col - 1].addPath(Direction.West);	
+				}catch(Exception e){e.toString();};
+				try
+				{
+					if(!maze[row][col + 1].isWall())
+						maze[row][col + 1].addPath(Direction.East);	
+				}catch(Exception e){e.toString();};
 			}
 		}
 		

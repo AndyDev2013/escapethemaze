@@ -9,6 +9,7 @@ public enum TileType
 	EXIT,
 	WEAPON,
 	HELP,
+	HINT,
 	DEBUG,
 	FOOD
 }
