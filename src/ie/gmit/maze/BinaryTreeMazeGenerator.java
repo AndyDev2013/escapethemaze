@@ -47,28 +47,28 @@ public class BinaryTreeMazeGenerator implements MazeGenerator
 		for (int row = 0; row < maze.length; row++)
 		{
 			for (int col = 0; col < maze.length; col++)
-			{
+			{				
 				try
 				{
 					if(!maze[row - 1][col].isWall())
-						maze[row - 1][col].addPath(Direction.North);						
+						maze[row][col].addPath(Direction.North);						
 						
 				}catch(Exception e){e.toString();};
 				try
 				{
 					if(!maze[row + 1][col].isWall())
-						maze[row + 1][col].addPath(Direction.South);	
+						maze[row][col].addPath(Direction.South);	
 					
 				}catch(Exception e){e.toString();};
 				try
 				{
 					if(!maze[row][col - 1].isWall())
-						maze[row][col - 1].addPath(Direction.West);	
+						maze[row][col].addPath(Direction.West);	
 				}catch(Exception e){e.toString();};
 				try
 				{
 					if(!maze[row][col + 1].isWall())
-						maze[row][col + 1].addPath(Direction.East);	
+						maze[row][col].addPath(Direction.East);	
 				}catch(Exception e){e.toString();};
 			}
 		}

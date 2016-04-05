@@ -2,6 +2,8 @@ package ie.gmit.ai;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.Random;
 
 import ie.gmit.entity.MazeEntity;
 import ie.gmit.food.Apple;
@@ -31,22 +33,10 @@ public class Maze {
 		buildMaze(algorithm);
 
 		placeDoor();
+		placeCages(GlobalsVars.CAGE_SPAWN_COUNT);
 		placeFood(GlobalsVars.FOOD_SPAWN_COUNT);
 		placeWeapons(GlobalsVars.WEAPON_SPAWN_COUNT);
-		placeCages(GlobalsVars.CAGE_SPAWN_COUNT);
-		
-		//TEST();
 	}
-	
-	/*				*/	
-	public void TEST()
-	{
-		for(HelpCage h : helpCages)
-		{
-			h.ShowPathToDoor(this);
-		}
-	}	
-	/*				*/
 	
 	public void initMaze()
 	{
@@ -78,17 +68,18 @@ public class Maze {
 	
 	public void placeDoor()
 	{
-		int row = GlobalsVars.RandomNumber(GlobalsVars.MAZE_DIMENSION);
-		int col = GlobalsVars.RandomNumber(GlobalsVars.MAZE_DIMENSION);
+		int row = (int) (Math.random() * (GlobalsVars.MAZE_DIMENSION - GlobalsVars.MAZE_DIMENSION - 2)) + GlobalsVars.MAZE_DIMENSION - 2;
+		int col = (int) (Math.random() * (GlobalsVars.MAZE_DIMENSION - GlobalsVars.MAZE_DIMENSION - 2)) + GlobalsVars.MAZE_DIMENSION - 2;
 		
 		while(getMazeEntity(row, col).isWall())
 		{
-			row = GlobalsVars.RandomNumber(GlobalsVars.MAZE_DIMENSION);
-			col = GlobalsVars.RandomNumber(GlobalsVars.MAZE_DIMENSION);	
+			row = (int) (Math.random() * (GlobalsVars.MAZE_DIMENSION - GlobalsVars.MAZE_DIMENSION - 2)) + GlobalsVars.MAZE_DIMENSION - 2;
+			col = (int) (Math.random() * (GlobalsVars.MAZE_DIMENSION - GlobalsVars.MAZE_DIMENSION - 2)) + GlobalsVars.MAZE_DIMENSION - 2;
 		}
 		
 		maze[row][col] = new MazeEntity(row, col, new TilePiece(TileType.EXIT, row, col));
 		maze[row][col].setGoalNode(true);
+		maze[row][col].setWall(false);
 		
 		GlobalsVars.GoalNode = maze[row][col];
 	}

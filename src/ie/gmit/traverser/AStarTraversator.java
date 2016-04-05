@@ -20,7 +20,7 @@ public class AStarTraversator implements Traversator
 	
 	public void traverse(Maze maze, MazeEntity node) 
 	{    			
-		PriorityQueue<MazeEntity> open = new PriorityQueue<MazeEntity>(100, (MazeEntity current, MazeEntity next)-> (current.getPathCost() + current.getHeuristic(goal)) - (next.getPathCost() + next.getHeuristic(goal)));
+		PriorityQueue<MazeEntity> open = new PriorityQueue<MazeEntity>(20, (MazeEntity current, MazeEntity next)-> (current.getPathCost() + current.getHeuristic(goal)) - (next.getPathCost() + next.getHeuristic(goal)));
 		List<MazeEntity> closed = new ArrayList<MazeEntity>();
     	   	
 		open.offer(node);
@@ -58,12 +58,13 @@ public class AStarTraversator implements Traversator
 				}
 			}									
 		}
-		
+
 		int a = 0;
 		
 		while(a < 10 && a < closed.size())
-		{
+		{		
 			closed.get(a).setTilepiece(new TilePiece(TileType.HINT, closed.get(a).getX(), closed.get(a).getX()));
+			closed.get(a).setWall(false);
 			a++;
 		}
 		

@@ -3,6 +3,8 @@ package ie.gmit.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jfree.chart.axis.SymbolicTickUnit;
+
 import ie.gmit.ai.GlobalsVars;
 import ie.gmit.ai.Maze;
 import ie.gmit.maze.Direction;
@@ -45,7 +47,6 @@ public class MazeEntity {
 		{
 			if (paths[i] == direction)
 			{
-				//System.out.println("Test");
 				return true;
 			}
 		}
@@ -55,30 +56,34 @@ public class MazeEntity {
 	public MazeEntity[] children(Maze maze)
 	{		
 		List<MazeEntity> children = new ArrayList<MazeEntity>();
-				
-		if (x > 0 && maze.getMazeEntity(x - 1,z).hasDirection(Direction.South))
+		
+		if (x > 0 && maze.getMazeEntity(x,z).hasDirection(Direction.North))
 		{
-			children.add(maze.getMazeEntity(x - 1,z));
+			if(!maze.getMazeEntity(x - 1,z).isWall())
+				children.add(maze.getMazeEntity(x - 1,z));
 		}
 		
-		if (x < maze.getMaze().length - 1 && maze.getMazeEntity(x + 1,z).hasDirection(Direction.North))
+		if (x > 0 && maze.getMazeEntity(x,z).hasDirection(Direction.South))
 		{
-			children.add(maze.getMazeEntity(x + 1,z));
+			if(!maze.getMazeEntity(x + 1,z).isWall())
+					children.add(maze.getMazeEntity(x + 1,z));
 		}
 		
-		if (z > 0 && maze.getMazeEntity(x,z - 1).hasDirection(Direction.East))
-		{
-			children.add(maze.getMazeEntity(x,z - 1));
+		if (x > 0 && maze.getMazeEntity(x,z).hasDirection(Direction.West))
+		{			
+			if(!maze.getMazeEntity(x,z - 1).isWall())
+				children.add(maze.getMazeEntity(x,z - 1));
 		}
 		
-		if (z < maze.getMaze().length - 1 && maze.getMazeEntity(x,z + 1).hasDirection(Direction.West)) 
+		if (x > 0 && maze.getMazeEntity(x,z).hasDirection(Direction.East))
 		{
-			children.add(maze.getMazeEntity(x,z + 1));
+			if(!maze.getMazeEntity(x,z - 1).isWall())
+				children.add(maze.getMazeEntity(x,z + 1));
 		}
 		
 		return (MazeEntity[]) children.toArray(new MazeEntity[children.size()]);
 	}
-
+	
 	public void addPath(Direction direction) 
 	{
 		int index = 0;
@@ -97,6 +102,15 @@ public class MazeEntity {
 		}
 		
 		paths[index] = direction;
+	}
+	
+	public void getPathsString()
+	{
+		System.out.println("---");
+		for (int i = 0; i < paths.length; i++) 
+		{
+			System.out.println(paths[i]);
+		}
 	}
 	
 	public MazeEntity[] adjacentNodes(Maze maze)

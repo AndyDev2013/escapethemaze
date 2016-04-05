@@ -243,10 +243,16 @@ public class GameRunner implements KeyListener
     
     private boolean isHelp(int x,int z)
     {
-    	if(maze.getMazeEntity(x, z).getTilePiece().getTileType() == TileType.HELP)
-    		return true;
-    	else 
-    		return false;
+    	try
+    	{
+	    	if(maze.getMazeEntity(x, z).getTilePiece().getTileType() == TileType.HELP)
+	    		return true;
+	    	else 
+	    		return false;
+    	}
+    	catch(Exception e){e.toString();};
+    	
+    	return false;
     }
     
 	private boolean isValidMove(int r, int c)

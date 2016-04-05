@@ -14,6 +14,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import ie.gmit.tile.TilePiece;
 import ie.gmit.tile.TileType;
 
 public class GameView extends JPanel implements ActionListener
@@ -48,6 +49,20 @@ public class GameView extends JPanel implements ActionListener
         
         int rowMult = 0;
         int colMult = 0;
+        
+        GlobalsVars.HINTS_TIME += GlobalsVars.TIMER_SPEED;
+        
+        if(GlobalsVars.HINTS_TIME > GlobalsVars.HINTS_MAX_TIME)
+        {        
+	    	for(int row = 0; row < GlobalsVars.MAZE_DIMENSION; row++) 
+	        {
+	        	for (int col = 0; col < GlobalsVars.MAZE_DIMENSION; col++)
+	        	{   
+	        		 if(maze.getMaze()[row][col].getTilePiece().getTileType() == TileType.HINT)
+	        			 maze.getMaze()[row][col].setTilepiece(new TilePiece(TileType.FLOOR,row,col));
+	        	}
+	        }
+        }
         
         if(!GlobalsVars.WON_GAME)
         {        

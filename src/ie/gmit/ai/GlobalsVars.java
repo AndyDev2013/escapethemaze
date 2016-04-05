@@ -21,6 +21,8 @@ public class GlobalsVars
 	public static final int DEFAULT_VIEW_SIZE = 800;
 	public static final int INFO_PANEL_SIZE = DEFAULT_VIEW_SIZE - (GlobalsVars.ImageSize * GlobalsVars.drawRows);
 	public static final int ImageSize = 160;
+
+	public static boolean MUSIC_PLAYING = true;
 	
 	public static boolean HELP_SCREEN = true;
 	public static boolean ZOOM_OUT = false;
@@ -34,7 +36,9 @@ public class GlobalsVars
 	public static int CAGE_SPAWN_COUNT = 15;
 	
 	public static int TIMER_SPEED = 200;
-	public static boolean MUSIC_PLAYING = true;
+	
+	public static int HINTS_MAX_TIME = 5000;
+	public static int HINTS_TIME = 0;
 	
 	// Global Player Variables
 
