@@ -4,12 +4,20 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 
+import ie.gmit.ai.GameRunner;
+import ie.gmit.ai.GlobalsVars;
 import ie.gmit.ai.Maze;
+import ie.gmit.entity.MazeEntity;
 import ie.gmit.tile.TilePiece;
 import ie.gmit.tile.TileType;
+import ie.gmit.traverser.AStarTraversator;
+import ie.gmit.traverser.BeamTraversator;
+import ie.gmit.traverser.BestFirstTraversator;
+import ie.gmit.traverser.Traversator;
 
 public class FireArcher extends TilePiece implements Fightable,Decideable {
 
@@ -22,7 +30,7 @@ public class FireArcher extends TilePiece implements Fightable,Decideable {
 	private BufferedImage imageFrame3;
 	private int imagePosition = 0;
 	
-	
+	private Traversator t;
 	
 	public FireArcher(TileType tileType, int x, int z) {
 		super(tileType, x, z);
@@ -43,6 +51,26 @@ public class FireArcher extends TilePiece implements Fightable,Decideable {
 			allFrames.add(imageFrame2);
 			allFrames.add(imageFrame3);
 		}
+		
+		t = randomTraverser();
+	}
+	
+	public Traversator randomTraverser()
+	{
+		Random rand = new Random();
+		int x = rand.nextInt(2);
+		
+		switch(x)
+		{
+			case 0: 
+				return new BestFirstTraversator(GameRunner.getMaze().getMazeEntity(GlobalsVars.player.getX(),GlobalsVars.player.getZ()),true);
+			case 1: 
+				return new AStarTraversator(GameRunner.getMaze().getMazeEntity(GlobalsVars.player.getX(),GlobalsVars.player.getZ()),true);
+			case 2: 
+				return new BeamTraversator(GameRunner.getMaze().getMazeEntity(GlobalsVars.player.getX(),GlobalsVars.player.getZ()),2,true);
+		}
+		
+		return new BeamTraversator(GlobalsVars.GoalNode, 2,true);
 	}
 
 	public void deprecateHealth(int val) {
@@ -76,15 +104,17 @@ public class FireArcher extends TilePiece implements Fightable,Decideable {
 		
 		return allFrames.get(imagePosition);
 	}
-
-	public void moveSentient() {
-		// TODO Auto-generated method stub
-		
+	
+	public void moveSentient (int oldX, int oldZ, int x, int z, Maze maze) {
+		setX(x);
+		setZ(z);	
+		maze.getMazeEntity(oldX, oldZ).setTilepiece(new TilePiece(TileType.FLOOR, oldX, oldZ));
+		maze.getMazeEntity(oldX, oldZ).setTilepiece(this);		
 	}
-
-	public void updateSentient(int oldX, int oldZ, int x, int z, Maze maze) {
-		// TODO Auto-generated method stub
-		
+	
+	public void move(Maze maze,int x,int z)
+	{
+		t.traverse(maze, maze.getMazeEntity(getX(), getZ()));
 	}
 
 }

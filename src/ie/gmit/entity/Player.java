@@ -24,6 +24,7 @@ public class Player extends TilePiece
 	private List<Food> InventoryFood = new ArrayList<Food>();
 	private List<Weapon> InventoryWeapons = new ArrayList<Weapon>();
 	private Hunger h;
+	private boolean isAlive = true;
 	
 	private int imagePosition = 0;
 	List<BufferedImage> allFrames;
@@ -54,6 +55,8 @@ public class Player extends TilePiece
 			allFrames.add(imageFrame3);
 		}
 	}
+	
+	
 	
 	public BufferedImage getTileImage()
 	{
@@ -252,5 +255,13 @@ public class Player extends TilePiece
 	public HungerStatus getHungryStatus()
 	{
 		return h.howHungryAmI(getHealth(),getHunger());
+	}
+
+	public boolean isAlive() {
+		return isAlive;
+	}
+
+	public void setAlive(boolean isAlive) {
+		this.isAlive = isAlive;
 	}
 }

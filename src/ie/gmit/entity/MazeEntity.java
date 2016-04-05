@@ -23,6 +23,8 @@ public class MazeEntity {
 
 	private MazeEntity parent;	
 	
+	private int vistedNumber = -1;
+	
 	public MazeEntity(int x,int z, TilePiece tile)
 	{
 		this.x = x;
@@ -59,26 +61,46 @@ public class MazeEntity {
 		
 		if (x > 0 && maze.getMazeEntity(x,z).hasDirection(Direction.North))
 		{
-			if(!maze.getMazeEntity(x - 1,z).isWall())
-				children.add(maze.getMazeEntity(x - 1,z));
+			try
+			{
+				if(!maze.getMazeEntity(x - 1,z).isWall())
+					children.add(maze.getMazeEntity(x - 1,z));				
+			}
+			catch(Exception e){	}
+
 		}
 		
 		if (x > 0 && maze.getMazeEntity(x,z).hasDirection(Direction.South))
 		{
-			if(!maze.getMazeEntity(x + 1,z).isWall())
-					children.add(maze.getMazeEntity(x + 1,z));
+			try
+			{
+				if(!maze.getMazeEntity(x + 1,z).isWall())
+					children.add(maze.getMazeEntity(x + 1,z));				
+			}
+			catch(Exception e){	}
+
 		}
 		
 		if (x > 0 && maze.getMazeEntity(x,z).hasDirection(Direction.West))
-		{			
-			if(!maze.getMazeEntity(x,z - 1).isWall())
-				children.add(maze.getMazeEntity(x,z - 1));
+		{	
+			try
+			{
+				if(!maze.getMazeEntity(x,z - 1).isWall())
+					children.add(maze.getMazeEntity(x,z - 1));				
+			}
+			catch(Exception e){	}
+
 		}
 		
 		if (x > 0 && maze.getMazeEntity(x,z).hasDirection(Direction.East))
 		{
-			if(!maze.getMazeEntity(x,z - 1).isWall())
-				children.add(maze.getMazeEntity(x,z + 1));
+			try
+			{
+				if(!maze.getMazeEntity(x,z - 1).isWall())
+					children.add(maze.getMazeEntity(x,z + 1));				
+			}
+			catch(Exception e){	}
+
 		}
 		
 		return (MazeEntity[]) children.toArray(new MazeEntity[children.size()]);
@@ -228,5 +250,13 @@ public class MazeEntity {
 	public int getPathCost() 
 	{
 		return this.distance;
+	}
+
+	public int getVistedNumber() {
+		return vistedNumber;
+	}
+
+	public void setVistedNumber(int vistedNumber) {
+		this.vistedNumber = vistedNumber;
 	}
 }

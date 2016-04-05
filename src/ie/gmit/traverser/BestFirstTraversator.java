@@ -1,8 +1,13 @@
 package ie.gmit.traverser;
 
+import java.awt.List;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
+import ie.gmit.ai.GameRunner;
 import ie.gmit.ai.GlobalsVars;
 import ie.gmit.ai.Maze;
 import ie.gmit.entity.MazeEntity;
@@ -13,20 +18,29 @@ public class BestFirstTraversator implements Traversator{
 
 	private MazeEntity goal;
 	
-	public BestFirstTraversator(MazeEntity goal){
-		this.goal = goal;
+	public BestFirstTraversator(MazeEntity goal,boolean findPlayer){
+		
+		if(!findPlayer)
+			this.goal = goal;
+		else
+			this.goal = GameRunner.getMaze().getMazeEntity(GlobalsVars.player.getX(),GlobalsVars.player.getZ());
 	}
 	
-	public void traverse(Maze maze, MazeEntity node) {
+	public HashMap traverse(Maze maze, MazeEntity node) {
 
+		HashMap<Integer,MazeEntity> vistedHp = new HashMap<Integer,MazeEntity>();
+		
 		maze.unvistMaze();
+		
+		int visitedCount = 0;
 		
 		LinkedList<MazeEntity> queue = new LinkedList<MazeEntity>();
 		queue.addFirst(node);
     	
 		while(!queue.isEmpty()){
 			node = queue.poll();
-			node.setVisited(true);	
+			node.setVisited(true);
+			node.setVistedNumber(visitedCount);
 			
 			if (node.isGoalNode()){
 				break;
@@ -49,6 +63,11 @@ public class BestFirstTraversator implements Traversator{
         	{    
         		MazeEntity me = maze.getMazeEntity(row, col);
         		
+        		if(maze.getMazeEntity(row, col).isVisited())
+        		{
+        			vistedHp.put(maze.getMazeEntity(row, col).getVistedNumber(),maze.getMazeEntity(row, col));
+        		}
+        		
         		if(maze.getMazeEntity(row, col).isVisited() && !maze.getMazeEntity(row, col).isGoalNode())
         		{        		
 					me.setTilepiece(new TilePiece(TileType.HINT, me.getX(), me.getZ()));
@@ -56,5 +75,9 @@ public class BestFirstTraversator implements Traversator{
         		}
         	}
 		}
+		
+		System.out.println(vistedHp.size());
+		
+		return vistedHp;
 	}
 }

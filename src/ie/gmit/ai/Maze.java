@@ -12,6 +12,7 @@ import ie.gmit.food.Food;
 import ie.gmit.maze.GeneratorAlgorithm;
 import ie.gmit.maze.MazeGeneratorFactory;
 import ie.gmit.monster.HelpCage;
+import ie.gmit.monster.Skeleton;
 import ie.gmit.tile.TilePiece;
 import ie.gmit.tile.TileType;
 import ie.gmit.weapon.Bomb;
@@ -49,7 +50,7 @@ public class Maze {
 			}
 		}
 	}	
-	
+
 	public void unvistMaze()
 	{
 		for (int row = 0; row < GlobalsVars.MAZE_DIMENSION; row++)

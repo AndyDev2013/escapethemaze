@@ -21,7 +21,7 @@ public class GameView extends JPanel implements ActionListener
 {
 	private static final long serialVersionUID = 1L;	
 		
-	private Maze maze;	
+	private static Maze maze;	
 	private Timer timer;
 	private Font font;
 	

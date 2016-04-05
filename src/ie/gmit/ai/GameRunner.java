@@ -2,23 +2,28 @@ package ie.gmit.ai;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.List;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.swing.JFrame;
 
+import ie.gmit.entity.MazeEntity;
 import ie.gmit.entity.Player;
 import ie.gmit.maze.GeneratorAlgorithm;
 import ie.gmit.monster.HelpCage;
+import ie.gmit.monster.Skeleton;
 import ie.gmit.tile.TileType;
 
 public class GameRunner implements KeyListener
 {
+	private static Maze maze;
+	private static ArrayList<MazeEntity> monstersBtt = new ArrayList<MazeEntity>();
 	private GameView view;
-	private Maze maze;
 	private SoundManager soundManager;
 	
 	public GameRunner(GeneratorAlgorithm algorithm) throws Exception
@@ -36,7 +41,46 @@ public class GameRunner implements KeyListener
     	setupApplication();
     	
 		GlobalsVars.startTime = System.currentTimeMillis();	
+		
+		CreateMonster();
+		
+		MonsterManager monster = new MonsterManager();
+		monster.setMonsterManager(monstersBtt);
+		monster.start();
 	}
+	
+	private void CreateMonster()
+	{
+		int row = GlobalsVars.RandomNumber(GlobalsVars.MAZE_DIMENSION);
+		int col = GlobalsVars.RandomNumber(GlobalsVars.MAZE_DIMENSION);		
+		int count = 0;
+		int tooLong = 0;
+		final int LIMIT = 200;		
+		
+		while(count < 3 && tooLong < LIMIT)
+		{		
+			while(maze.getMazeEntity(row, col).isWall())
+			{
+				row = GlobalsVars.RandomNumber(GlobalsVars.MAZE_DIMENSION);
+				col = GlobalsVars.RandomNumber(GlobalsVars.MAZE_DIMENSION);
+			}		
+			
+			Skeleton skele = new Skeleton(TileType.ENEMY, GlobalsVars.RandomNumber(GlobalsVars.MAZE_DIMENSION), GlobalsVars.RandomNumber(GlobalsVars.MAZE_DIMENSION));
+			
+			maze.getMaze()[row][col] = new MazeEntity(row, col, skele);
+			maze.getMazeEntity(row, col).setTilepiece(skele);
+			maze.getMazeEntity(row, col).setWall(false);
+						
+			monstersBtt.add(maze.getMazeEntity(row, col));
+						
+			row = GlobalsVars.RandomNumber(GlobalsVars.MAZE_DIMENSION);
+			col = GlobalsVars.RandomNumber(GlobalsVars.MAZE_DIMENSION);
+			
+			++count;
+		}
+		
+	}
+	
 	
 	private void setupApplication()
 	{
@@ -257,11 +301,19 @@ public class GameRunner implements KeyListener
     
 	private boolean isValidMove(int r, int c)
 	{
-		if (r <= GlobalsVars.MAZE_DIMENSION - 1 && c <= maze.getMaze()[r].length - 1 && !maze.getMaze()[r][c].isWall())
+		try
 		{
-			return true;
+		
+			if (r <= GlobalsVars.MAZE_DIMENSION - 1 && c <= maze.getMaze()[r].length - 1 && !maze.getMaze()[r][c].isWall())
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
 		}
-		else
+		catch(Exception eCcC)
 		{
 			return false;
 		}
@@ -297,6 +349,11 @@ public class GameRunner implements KeyListener
 		{
 			return TileType.DEBUG;
 		}
+	}
+	
+	public static Maze getMaze()
+	{
+		return maze;
 	}
     
     public void keyReleased(KeyEvent e) {}
